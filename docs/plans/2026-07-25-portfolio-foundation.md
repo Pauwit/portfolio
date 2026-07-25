@@ -786,7 +786,7 @@ export default function Navbar() {
         'fixed left-1/2 top-4 z-50 flex -translate-x-1/2 items-center gap-6',
         'rounded-chip border border-ink/10 bg-surface/70 backdrop-blur-md',
         reduced ? '' : 'transition-[padding] duration-300',
-        scrolled ? 'px-4 py-2' : 'px-6 py-3',
+        scrolled && !reduced ? 'px-4 py-2' : 'px-6 py-3',
       ].join(' ')}
     >
       {LINKS.map((link) => (

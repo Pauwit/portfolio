@@ -1078,6 +1078,116 @@ Then, in the GitHub repo, confirm the "Deploy to GitHub Pages" Action run succee
 
 ---
 
+### Task 14: Migrate content collections to the Content Layer API
+
+**Added after the final whole-branch review** flagged that `src/content/config.ts` uses Astro 5's legacy `defineCollection({ type: ... })` shape rather than the current Content Layer API (`loader:` + `glob()`/`file()` from `astro/loaders`). It works either way today since `projects`/`timeline` are still empty, but migrating now — before any real content is authored against the old shape in Phase 2/3 — is strictly cheaper than migrating later.
+
+**Files:**
+- Create: `src/content.config.ts` (replaces `src/content/config.ts`)
+- Delete: `src/content/config.ts`
+- Modify: `src/content/links/links.json` → moved back to `src/content/links.json` with restructured content
+
+**Interfaces:**
+- Consumes: nothing new.
+- Produces: the same `projects`/`timeline`/`links` collections with the same schemas and the same `getEntry('links', 'links')` call site in `Footer.astro` — this migration must not require changing `Footer.astro`.
+
+- [ ] **Step 1: Create `src/content.config.ts`**
+
+```ts
+import { defineCollection, z } from 'astro:content';
+import { glob, file } from 'astro/loaders';
+
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  schema: z.object({
+    title: z.string(),
+    summary: z.string(),
+    stack: z.array(z.string()),
+    githubUrl: z.string().url().nullable(),
+    visibility: z.enum(['public', 'private']),
+    category: z.enum([
+      'Flagship',
+      'Hackathons',
+      'Medical CV & Research',
+      'Systems & From-scratch',
+      'Tools',
+      'Fun Stuff',
+      'Private & Team',
+    ]),
+    flagship: z.boolean().default(false),
+    flagshipOrder: z.number().optional(),
+    image: z.string().optional(),
+  }),
+});
+
+const timeline = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/timeline' }),
+  schema: z.object({
+    startDate: z.string(),
+    endDate: z.string().nullable(),
+    title: z.string(),
+    org: z.string(),
+    kind: z.enum(['education', 'work', 'teaching', 'volunteer', 'project-checkpoint']),
+    description: z.string(),
+  }),
+});
+
+const links = defineCollection({
+  loader: file('./src/content/links.json'),
+  schema: z.object({
+    github: z.string().url(),
+    linkedin: z.string().url(),
+  }),
+});
+
+export const collections = { projects, timeline, links };
+```
+
+Note: `interests` is still intentionally excluded — same reasoning as the original Task 7 (a structured JSON beat/column shape suits direct consumption better than a Zod-validated collection, revisited when the Interests page phase is planned).
+
+- [ ] **Step 2: Restructure and relocate the links data**
+
+The `file()` loader treats each top-level key of the JSON object as one entry id, with that key's value as the entry's data. To keep `getEntry('links', 'links')` resolving exactly as before (one entry with id `"links"`), wrap the existing data under a `"links"` key and move the file up one level:
+
+```bash
+mkdir -p src/content
+cat > src/content/links.json << 'EOF'
+{
+  "links": {
+    "github": "https://github.com/Pauwit",
+    "linkedin": "https://www.linkedin.com/in/paul-stanislas-witkowski"
+  }
+}
+EOF
+git rm -r src/content/links
+```
+
+- [ ] **Step 3: Remove the old config file**
+
+```bash
+git rm src/content/config.ts
+```
+
+- [ ] **Step 4: Verify the build**
+
+Run: `npm run build`
+Expected: `astro check` passes with no schema errors, the build completes. It's fine if `projects`/`timeline` still warn or report zero entries (no content authored yet) — that matches current behavior, not a regression.
+
+- [ ] **Step 5: Verify the Footer still resolves the links entry correctly**
+
+Run `npm run dev`, load the home page, and confirm the footer's GitHub/LinkedIn links still render with the correct `href` values (same check as Task 9, re-run because the data source moved).
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add src/content.config.ts src/content/links.json
+git commit -m "refactor: migrate content collections to astro content layer api"
+```
+
+Note: `git rm` in Steps 2-3 already stages the deletions; a single commit covering the add + moves + deletes is correct here since they're one atomic change, not several unrelated ones.
+
+---
+
 ## What Phase 2 picks up
 
 Home page real content (hero copy, flagship project grid with the 3D Card effect and Spotlight background, real OG image), and the Projects page (full grid, Card Flip for private repos). Both get their own plan once this phase is reviewed and merged.

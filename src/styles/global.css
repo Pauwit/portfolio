@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #F7F5F4;
+  --color-surface: #ECE8E6;
+  --color-ink: #100C08;
+  --color-accent: #95122C;
+  --radius-card: 12px;
+  --radius-chip: 8px;
+  --font-display: "Clash Display", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Switzer", ui-sans-serif, system-ui, sans-serif;
+}
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+[data-theme="dark"] {
+  --color-bg: #100C08;
+  --color-surface: #1C1712;
+  --color-ink: #EFECE8;
+}
+
+@font-face {
+  font-family: "Clash Display";
+  src: url("/fonts/ClashDisplay-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Clash Display";
+  src: url("/fonts/ClashDisplay-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/Switzer-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Switzer";
+  src: url("/fonts/Switzer-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}

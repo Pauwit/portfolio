@@ -286,16 +286,25 @@ In the GitHub repo settings, under Pages, set the source to "GitHub Actions" (on
 **Interfaces:**
 - Produces: Tailwind utilities `bg-bg`, `bg-surface`, `text-ink`, `bg-accent`/`text-accent`, `font-display`/`font-body`, `rounded-card` (12px) and `rounded-chip` (8px) — every later component uses these instead of raw color/radius values.
 
-- [ ] **Step 1: Download the font files (manual — these are licensed binary assets, not something to generate)**
+- [ ] **Step 1: Download the font files from Fontshare's CDN**
 
-From https://www.fontshare.com/fonts/clash-display, download the WOFF2 files for **Semibold (600)** and **Bold (700)**. From https://www.fontshare.com/fonts/switzer, download the WOFF2 files for **Regular (400)** and **Medium (500)**. Place them at:
+These are licensed but freely-distributed binary assets, fetched directly from Fontshare's CDN (discovered via their public CSS API at `https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=switzer@400,500&display=swap`):
 
+```bash
+mkdir -p public/fonts
+curl -sL "https://cdn.fontshare.com/wf/FPDAZ2S6SW4QMSRIIKNNGTPM6VIXYMKO/5HNPQ453FRLIQWV2FNOBUU3FKTDZQVSG/Z3MGHFHX6DCTLQ55LJYRJ5MDCZPMFZU6.woff2" -o public/fonts/ClashDisplay-Semibold.woff2
+curl -sL "https://cdn.fontshare.com/wf/BFBSY7LX5W2U2EROCLVVTQP4VS7S4PC3/IIUX4FGTMD2LK2VWD3RVTAS4SSMUN7B5/53RZKGODFYDW3QHTIL7IPOWTBCSUEZK7.woff2" -o public/fonts/ClashDisplay-Bold.woff2
+curl -sL "https://cdn.fontshare.com/wf/BLNB4FAQFNK56DWWNF7PMGTCOTZHOEII/ST3WKSSDMBK2MIQQO3MAVYWLF4FTOLFV/6IN5WOLRCYP4G4MOCOHOMXNON6Q7MDAR.woff2" -o public/fonts/Switzer-Regular.woff2
+curl -sL "https://cdn.fontshare.com/wf/OYB4CXKJQXKTNSLJMTDQOIVUL2V5EL7S/WYO2P7DQVV5RNXGMCUO2HL4RJP4VFUAS/6XPIMU23OJVRY676OG5YVJMWEHWICATX.woff2" -o public/fonts/Switzer-Medium.woff2
 ```
-public/fonts/ClashDisplay-Semibold.woff2
-public/fonts/ClashDisplay-Bold.woff2
-public/fonts/Switzer-Regular.woff2
-public/fonts/Switzer-Medium.woff2
+
+Verify each file downloaded correctly (should be a real WOFF2 binary, not an HTML error page — a valid file is at least a few KB):
+
+```bash
+ls -la public/fonts/
 ```
+
+Expected: four `.woff2` files, each non-trivially sized (tens of KB, not 0 bytes and not suspiciously small like an error page would be).
 
 - [ ] **Step 2: Create `src/styles/global.css`**
 

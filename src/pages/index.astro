@@ -2,8 +2,8 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Spotlight } from '@/components/ui/spotlight';
-import { TextEffect } from '@/components/ui/text-effect';
-import ProjectCard3D from '@/components/ProjectCard3D';
+import Hero from '@/components/Hero';
+import FlagshipGrid from '@/components/FlagshipGrid';
 import { siteConfig } from '@/site.config';
 import linksData from '@/content/links.json';
 
@@ -14,15 +14,15 @@ const flagship = allProjects
   .sort(
     (a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) =>
       (a.data.flagshipOrder ?? 0) - (b.data.flagshipOrder ?? 0),
-  );
-
-const spanByOrder: Record<number, string> = {
-  1: 'md:col-span-7',
-  2: 'md:col-span-5',
-  3: 'md:col-span-4',
-  4: 'md:col-span-4',
-  5: 'md:col-span-4',
-};
+  )
+  .map((p: CollectionEntry<'projects'>) => ({
+    title: p.data.title,
+    summary: p.data.summary,
+    stack: p.data.stack,
+    githubUrl: p.data.githubUrl,
+    category: p.data.category,
+    flagshipOrder: p.data.flagshipOrder,
+  }));
 ---
 
 <BaseLayout title="Home">
@@ -31,33 +31,13 @@ const spanByOrder: Record<number, string> = {
 
     <div class="relative mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-12">
       <div class="md:col-span-7">
-        <h1 class="font-display text-4xl font-bold leading-tight text-foreground md:text-6xl">
-          <TextEffect client:load as="span" text={siteConfig.tagline} />
-        </h1>
-        <p class="mt-6 max-w-md text-foreground/70">
-          {siteConfig.description}
-        </p>
-        <div class="mt-8 flex flex-wrap gap-4">
-          <a
-            href={siteConfig.cvPath}
-            class="rounded-control bg-accent px-5 py-3 text-sm font-medium text-white"
-          >
-            Download CV
-          </a>
-          <a
-            href="/contact"
-            class="rounded-control border border-foreground/20 px-5 py-3 text-sm font-medium text-foreground"
-          >
-            Contact
-          </a>
-        </div>
-        <div class="mt-6 flex gap-5 text-sm text-foreground/60">
-          {links.map((link) => (
-            <a href={link.url} target="_blank" rel="noreferrer" class="hover:text-foreground">
-              {link.label}
-            </a>
-          ))}
-        </div>
+        <Hero
+          client:load
+          tagline={siteConfig.tagline}
+          description={siteConfig.description}
+          cvPath={siteConfig.cvPath}
+          links={links}
+        />
       </div>
       <div class="md:col-span-5"></div>
     </div>
@@ -66,18 +46,8 @@ const spanByOrder: Record<number, string> = {
   <section class="px-6 pb-24 md:px-12">
     <div class="mx-auto max-w-6xl">
       <h2 class="font-display text-2xl font-semibold text-foreground">Flagship projects</h2>
-      <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-12">
-        {flagship.map((project: CollectionEntry<'projects'>) => (
-          <ProjectCard3D
-            client:visible
-            className={`col-span-1 ${spanByOrder[project.data.flagshipOrder ?? 0] ?? 'md:col-span-4'}`}
-            title={project.data.title}
-            summary={project.data.summary}
-            stack={project.data.stack}
-            githubUrl={project.data.githubUrl}
-            category={project.data.category}
-          />
-        ))}
+      <div class="mt-8">
+        <FlagshipGrid client:visible projects={flagship} />
       </div>
       <div class="mt-10">
         <a

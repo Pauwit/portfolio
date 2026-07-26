@@ -13,6 +13,7 @@
 import { ArrowRight, Repeat2 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { prefersReducedMotion } from "@/lib/reducedMotion";
 
 export interface CardFlipProps {
   title?: string;
@@ -30,6 +31,7 @@ export default function CardFlip({
   className,
 }: CardFlipProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const reduced = prefersReducedMotion();
 
   return (
     <div
@@ -41,22 +43,25 @@ export default function CardFlip({
         className={cn(
           "relative h-full w-full",
           "[transform-style:preserve-3d]",
-          "transition-[transform] duration-500 ease-[cubic-bezier(0.77,0,0.175,1)]",
-          "motion-reduce:transition-none",
-          isFlipped
-            ? "[transform:rotateY(180deg)]"
-            : "[transform:rotateY(0deg)]"
+          reduced
+            ? ""
+            : cn(
+                "transition-[transform] duration-500 ease-[cubic-bezier(0.77,0,0.175,1)]",
+                isFlipped ? "[transform:rotateY(180deg)]" : "[transform:rotateY(0deg)]"
+              )
         )}
       >
         <div
           className={cn(
             "absolute inset-0 h-full w-full",
-            "[backface-visibility:hidden] [transform:rotateY(0deg)]",
             "overflow-hidden rounded-panel",
             "bg-surface",
             "border border-foreground/10",
             "transition-shadow duration-500",
-            "group-hover:shadow-lg"
+            "group-hover:shadow-lg",
+            reduced
+              ? cn("transition-opacity duration-300", isFlipped ? "opacity-0" : "opacity-100")
+              : "[backface-visibility:hidden] [transform:rotateY(0deg)]"
           )}
         >
           <div className="relative h-full overflow-hidden bg-surface">
@@ -116,7 +121,9 @@ export default function CardFlip({
         <div
           className={cn(
             "absolute inset-0 h-full w-full",
-            "[backface-visibility:hidden] [transform:rotateY(180deg)]",
+            reduced
+              ? cn("transition-opacity duration-300", isFlipped ? "opacity-100" : "opacity-0")
+              : "[backface-visibility:hidden] [transform:rotateY(180deg)]",
             "rounded-panel p-6",
             "bg-surface",
             "border border-foreground/10",

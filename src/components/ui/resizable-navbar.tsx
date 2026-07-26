@@ -226,10 +226,16 @@ export const MobileNavToggle = ({
   isOpen: boolean;
   onClick: () => void;
 }) => {
-  return isOpen ? (
-    <IconX className="text-foreground" onClick={onClick} />
-  ) : (
-    <IconMenu2 className="text-foreground" onClick={onClick} />
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={isOpen ? "Close menu" : "Open menu"}
+      aria-expanded={isOpen}
+      className="flex h-9 w-9 items-center justify-center"
+    >
+      {isOpen ? <IconX className="text-foreground" /> : <IconMenu2 className="text-foreground" />}
+    </button>
   );
 };
 

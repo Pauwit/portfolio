@@ -1,0 +1,17 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import InterestsParallax from '@/components/InterestsParallax';
+
+const allInterests = await getCollection('interests');
+const interests = allInterests.map((i: CollectionEntry<'interests'>) => ({
+  name: i.data.name,
+  beats: i.data.beats,
+}));
+---
+
+<BaseLayout title="Interests" description="Photography, drums, and tennis: what Paul Witkowski does outside of engineering.">
+  <div class="pt-24">
+    <InterestsParallax client:load interests={interests} />
+  </div>
+</BaseLayout>

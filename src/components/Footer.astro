@@ -5,7 +5,7 @@ const links = linksData as { id: string; label: string; url: string; icon: strin
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-t border-foreground/10 px-6 py-10 md:px-12">
+<footer class="relative z-10 border-t border-foreground/10 bg-background px-6 py-10 md:px-12">
   <div class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 text-sm text-foreground/60 md:flex-row md:items-center">
     <p>&copy; {year} Paul Witkowski. Built with Astro.</p>
     <nav class="flex gap-6">

@@ -1,7 +1,6 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { Spotlight } from '@/components/ui/spotlight';
 import Hero from '@/components/Hero';
 import FlagshipGrid from '@/components/FlagshipGrid';
 import { siteConfig } from '@/site.config';
@@ -27,9 +26,7 @@ const flagship = allProjects
 ---
 
 <BaseLayout title="Home">
-  <section class="relative overflow-hidden px-6 pt-40 pb-24 md:px-12">
-    <Spotlight className="-top-40 left-0 md:left-40" fill="#95122C" />
-
+  <section class="px-6 pt-40 pb-24 md:px-12">
     <div class="relative mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-12">
       <div class="md:col-span-7">
         <Hero

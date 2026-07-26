@@ -7,6 +7,7 @@ import {
   type ReactElement,
   type ReactNode,
 } from 'react';
+import { motion, useMotionValueEvent, useScroll } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { prefersReducedMotion } from '@/lib/reducedMotion';
 
@@ -28,52 +29,59 @@ interface NavItemsProps {
 }
 
 /**
- * Scroll-aware wrapper. Tracks scroll position and clones `visible`/`reduced`
- * into its child (NavBody), which uses them to shrink on scroll. When
- * prefers-reduced-motion is set, `visible` never flips, so the navbar always
- * renders at its one fixed (unscrolled) size.
+ * Scroll-aware wrapper (Aceternity's real mechanism, adapted). Drives a
+ * `visible` motion state off actual scroll position via `useScroll` +
+ * `useMotionValueEvent`, then clones it into NavBody, which spring-animates
+ * its size/shadow off that value. Under prefers-reduced-motion, the scroll
+ * callback is a no-op, so `visible` never leaves its initial `false` value
+ * and the pill renders at one constant size.
  */
 export function Navbar({ children, className }: NavbarProps) {
-  const [scrolled, setScrolled] = useState(false);
+  const { scrollY } = useScroll();
+  const [visible, setVisible] = useState(false);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     setReduced(prefersReducedMotion());
-
-    function onScroll() {
-      setScrolled(window.scrollY > 24);
-    }
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useMotionValueEvent(scrollY, 'change', (latest) => {
+    if (reduced) return;
+    setVisible(latest > 24);
+  });
+
   return (
-    <div className={cn('fixed inset-x-0 top-4 z-50 flex justify-center', className)}>
+    <motion.nav className={cn('fixed inset-x-0 top-4 z-50 flex justify-center', className)}>
       {Children.map(children, (child) =>
         isValidElement(child)
-          ? cloneElement(child as ReactElement<NavBodyProps>, {
-              visible: scrolled && !reduced,
-              reduced,
-            })
+          ? cloneElement(child as ReactElement<NavBodyProps>, { visible, reduced })
           : child,
       )}
-    </div>
+    </motion.nav>
   );
 }
 
 export function NavBody({ children, className, visible, reduced }: NavBodyProps) {
   return (
-    <div
+    <motion.div
+      animate={{
+        width: visible ? '85%' : '100%',
+        paddingLeft: visible ? '16px' : '24px',
+        paddingRight: visible ? '16px' : '24px',
+        paddingTop: visible ? '8px' : '12px',
+        paddingBottom: visible ? '8px' : '12px',
+        boxShadow: visible
+          ? '0 8px 30px rgba(0, 0, 0, 0.12)'
+          : '0 0px 0px rgba(0, 0, 0, 0)',
+      }}
+      transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 200, damping: 50 }}
       className={cn(
-        'flex items-center gap-6 rounded-chip border border-ink/10 bg-surface/70 backdrop-blur-md',
-        reduced ? '' : 'transition-all duration-300',
-        visible ? 'gap-4 px-4 py-2' : 'px-6 py-3',
+        'relative z-[60] mx-auto flex w-full max-w-2xl items-center justify-between gap-6 rounded-chip border border-ink/10 bg-surface/70 backdrop-blur-md',
         className,
       )}
     >
       {children}
-    </div>
+    </motion.div>
   );
 }
 

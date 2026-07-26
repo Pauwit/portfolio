@@ -40,6 +40,8 @@ const ogImageUrl = new URL(ogImage, siteConfig.url).toString();
     <meta name="twitter:image" content={ogImageUrl} />
 
     <script is:inline set:html={noFlashThemeScript} />
+
+    <!-- Analytics insertion point: cookie-less, EU/GDPR-friendly tool (e.g. Plausible/Umami) goes here. -->
   </head>
   <body>
     <Navbar client:load />

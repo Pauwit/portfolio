@@ -7,6 +7,7 @@ interface FlagshipProject {
   stack: string[];
   githubUrl: string | null;
   category: string;
+  image: string | null;
   flagshipOrder: number | null;
 }
 
@@ -35,6 +36,7 @@ export default function FlagshipGrid({ projects }: { projects: FlagshipProject[]
             stack={project.stack}
             githubUrl={project.githubUrl}
             category={project.category}
+            image={project.image}
           />
         ))}
       </div>

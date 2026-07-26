@@ -9,6 +9,7 @@ export interface ProjectItem {
   githubUrl: string | null;
   visibility: 'public' | 'private';
   category: string;
+  image: string | null;
 }
 
 const CATEGORIES = [
@@ -67,6 +68,7 @@ export default function ProjectsGrid({ projects }: { projects: ProjectItem[] }) 
               stack={project.stack}
               githubUrl={project.githubUrl}
               category={project.category}
+              image={project.image}
             />
           ),
         )}

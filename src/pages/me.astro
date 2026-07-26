@@ -1,0 +1,60 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import MeTimeline from '@/components/MeTimeline';
+import { siteConfig } from '@/site.config';
+
+const allTimeline = await getCollection('timeline');
+const items = allTimeline
+  .sort((a: CollectionEntry<'timeline'>, b: CollectionEntry<'timeline'>) => a.data.startDate.localeCompare(b.data.startDate))
+  .map((t: CollectionEntry<'timeline'>) => ({
+    title: t.data.title,
+    org: t.data.org,
+    kind: t.data.kind,
+    description: t.data.description,
+    startDate: t.data.startDate,
+    endDate: t.data.endDate,
+  }));
+---
+
+<BaseLayout title="Me" description="Paul Witkowski's background: education, work, teaching, and project checkpoints.">
+  <section class="mx-auto max-w-6xl px-6 pt-40 pb-16 md:px-12">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
+      <div class="md:col-span-4">
+        <img
+          src="https://picsum.photos/seed/paul-portrait/480/480"
+          alt="Portrait of Paul Witkowski"
+          width="240"
+          height="240"
+          class="h-60 w-60 rounded-full object-cover"
+        />
+      </div>
+      <div class="md:col-span-8">
+        <h1 class="font-display text-4xl font-bold text-foreground">Paul Witkowski</h1>
+        <p class="mt-6 max-w-2xl text-foreground/70">
+          I'm a Master's student in AI and Systems Engineering at EPITA (SCIA major), based in Paris. I build AI
+          systems end to end: the model, the data pipeline underneath it, and the infrastructure that runs it, and
+          I go low enough to write compilers and shells by hand when I want to actually understand what's happening
+          under a tool I use every day. That range shows up across the work: a computer vision pipeline now running
+          daily in hospital diagnostics at Hôpital des Quinze-Vingts, a data architecture built for IoT-scale
+          wildfire detection, and a Tiger compiler and POSIX shell built from nothing but a lexer and a blank file.
+        </p>
+        <p class="mt-4 max-w-2xl text-foreground/70">
+          Outside coursework, I've taught as a C#/OCaml teaching assistant at EPITA, spent a semester on exchange at
+          Boston University, and interned in AI and computer vision engineering at CNRS. I currently volunteer with
+          Prologin, running coding workshops for middle and high school girls.
+        </p>
+        <a
+          href={siteConfig.cvPath}
+          class="mt-8 inline-block rounded-control bg-accent px-5 py-3 text-sm font-medium text-white"
+        >
+          Download CV
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <MeTimeline client:visible items={items} />
+  </section>
+</BaseLayout>

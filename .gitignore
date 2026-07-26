@@ -4,6 +4,7 @@ Thumbs.db
 .vscode/
 node_modules/
 dist/
+.astro/
 .env
 context/
 .superpowers/

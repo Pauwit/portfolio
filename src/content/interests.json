@@ -1,0 +1,74 @@
+[
+  {
+    "id": "photography",
+    "name": "Photography",
+    "beats": [
+      { "title": "Photography", "column": "middle" },
+      {
+        "paragraph": "A running side habit alongside the engineering: mostly street and travel shots, shot on whatever camera is in reach that week.",
+        "column": "left"
+      },
+      {
+        "column": "left",
+        "images": [
+          "https://picsum.photos/seed/photography1/800/1000",
+          "https://picsum.photos/seed/photography2/800/1000"
+        ]
+      },
+      {
+        "column": "right",
+        "images": [
+          "https://picsum.photos/seed/photography3/800/1000",
+          "https://picsum.photos/seed/photography4/800/1000"
+        ]
+      },
+      {
+        "paragraph": "Editing is part of the fun too, mostly color grading, rarely anything heavier.",
+        "column": "right"
+      }
+    ]
+  },
+  {
+    "id": "drums",
+    "name": "Drums",
+    "beats": [
+      { "title": "Drums", "column": "middle" },
+      {
+        "paragraph": "Started teaching myself on a practice pad, then a real kit, because I wanted to understand rhythm from the inside rather than just listening to it.",
+        "column": "left"
+      },
+      {
+        "column": "left",
+        "images": ["https://picsum.photos/seed/drums1/800/1000"]
+      },
+      { "subtitle": "Band", "column": "middle" },
+      {
+        "paragraph": "That turned into forming a band with friends, rehearsing weekly and playing the occasional small show.",
+        "column": "right"
+      },
+      {
+        "column": "right",
+        "images": ["https://picsum.photos/seed/drums2/800/1000"]
+      }
+    ]
+  },
+  {
+    "id": "tennis",
+    "name": "Tennis",
+    "beats": [
+      { "title": "Tennis", "column": "middle" },
+      {
+        "paragraph": "Weekly matches, more about the standing rivalry with regular hitting partners than any real ranking ambition.",
+        "column": "right"
+      },
+      {
+        "column": "left",
+        "images": ["https://picsum.photos/seed/tennis1/800/1000"]
+      },
+      {
+        "column": "right",
+        "images": ["https://picsum.photos/seed/tennis2/800/1000"]
+      }
+    ]
+  }
+]

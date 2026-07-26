@@ -1,0 +1,30 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectsGrid from '@/components/ProjectsGrid';
+
+const allProjects = await getCollection('projects');
+const projects = allProjects
+  .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => a.data.title.localeCompare(b.data.title))
+  .map((p: CollectionEntry<'projects'>) => ({
+    title: p.data.title,
+    summary: p.data.summary,
+    stack: p.data.stack,
+    githubUrl: p.data.githubUrl,
+    visibility: p.data.visibility,
+    category: p.data.category,
+  }));
+---
+
+<BaseLayout title="Projects" description="The full project set: flagship builds, hackathons, medical computer vision research, systems from scratch, tools, and team work.">
+  <section class="mx-auto max-w-6xl px-6 pt-40 pb-24 md:px-12">
+    <h1 class="font-display text-4xl font-bold text-foreground">Projects</h1>
+    <p class="mt-4 max-w-xl text-foreground/70">
+      Everything from hospital-deployed computer vision to compilers built by hand. Filter by category.
+    </p>
+
+    <div class="mt-12">
+      <ProjectsGrid client:load projects={projects} />
+    </div>
+  </section>
+</BaseLayout>

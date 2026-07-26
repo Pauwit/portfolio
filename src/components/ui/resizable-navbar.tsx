@@ -1,102 +1,283 @@
+"use client";
+import { cn } from "@/lib/utils";
+import { prefersReducedMotion } from "@/lib/reducedMotion";
+import { IconMenu2, IconX } from "@tabler/icons-react";
 import {
-  Children,
-  cloneElement,
-  isValidElement,
-  useEffect,
-  useState,
-  type ReactElement,
-  type ReactNode,
-} from 'react';
-import { motion, useMotionValueEvent, useScroll } from 'motion/react';
-import { cn } from '@/lib/utils';
-import { prefersReducedMotion } from '@/lib/reducedMotion';
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+} from "motion/react";
+
+import React, { useRef, useState } from "react";
+
 
 interface NavbarProps {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
 }
 
 interface NavBodyProps {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
   visible?: boolean;
-  reduced?: boolean;
 }
 
 interface NavItemsProps {
-  items: { name: string; link: string }[];
+  items: {
+    name: string;
+    link: string;
+  }[];
+  className?: string;
+  onItemClick?: () => void;
+}
+
+interface MobileNavProps {
+  children: React.ReactNode;
+  className?: string;
+  visible?: boolean;
+}
+
+interface MobileNavHeaderProps {
+  children: React.ReactNode;
   className?: string;
 }
 
-/**
- * Scroll-aware wrapper (Aceternity's real mechanism, adapted). Drives a
- * `visible` motion state off actual scroll position via `useScroll` +
- * `useMotionValueEvent`, then clones it into NavBody, which spring-animates
- * its size/shadow off that value. Under prefers-reduced-motion, the scroll
- * callback is a no-op, so `visible` never leaves its initial `false` value
- * and the pill renders at one constant size.
- */
-export function Navbar({ children, className }: NavbarProps) {
-  const { scrollY } = useScroll();
-  const [visible, setVisible] = useState(false);
-  const [reduced, setReduced] = useState(false);
+interface MobileNavMenuProps {
+  children: React.ReactNode;
+  className?: string;
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-  useEffect(() => {
-    setReduced(prefersReducedMotion());
-  }, []);
+export const Navbar = ({ children, className }: NavbarProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollY } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  // Reduced motion: start (and stay) in the compact/frosted state, never
+  // toggled by scroll, so the navbar reads as one consistent size.
+  const [visible, setVisible] = useState<boolean>(() => prefersReducedMotion());
 
-  useMotionValueEvent(scrollY, 'change', (latest) => {
-    if (reduced) return;
-    setVisible(latest > 24);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (prefersReducedMotion()) return;
+    if (latest > 100) {
+      setVisible(true);
+    } else {
+      setVisible(false);
+    }
   });
 
   return (
-    <motion.nav className={cn('fixed inset-x-0 top-4 z-50 flex justify-center', className)}>
-      {Children.map(children, (child) =>
-        isValidElement(child)
-          ? cloneElement(child as ReactElement<NavBodyProps>, { visible, reduced })
+    <motion.div
+      ref={ref}
+      className={cn("fixed inset-x-0 top-4 z-40 w-full", className)}
+    >
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child)
+          ? React.cloneElement(
+              child as React.ReactElement<{ visible?: boolean }>,
+              { visible },
+            )
           : child,
       )}
-    </motion.nav>
+    </motion.div>
   );
-}
+};
 
-export function NavBody({ children, className, visible, reduced }: NavBodyProps) {
+export const NavBody = ({ children, className, visible }: NavBodyProps) => {
   return (
     <motion.div
       animate={{
-        width: visible ? '85%' : '100%',
-        paddingLeft: visible ? '16px' : '24px',
-        paddingRight: visible ? '16px' : '24px',
-        paddingTop: visible ? '8px' : '12px',
-        paddingBottom: visible ? '8px' : '12px',
+        backdropFilter: visible ? "blur(10px)" : "none",
         boxShadow: visible
-          ? '0 8px 30px rgba(0, 0, 0, 0.12)'
-          : '0 0px 0px rgba(0, 0, 0, 0)',
+          ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
+          : "none",
+        width: visible ? "40%" : "100%",
+        y: visible ? 20 : 0,
       }}
-      transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 200, damping: 50 }}
+      transition={{
+        type: "spring",
+        stiffness: 200,
+        damping: 50,
+      }}
+      style={{
+        minWidth: "800px",
+      }}
       className={cn(
-        'relative z-[60] mx-auto flex w-full max-w-2xl items-center justify-between gap-6 rounded-chip border border-ink/10 bg-surface/70 backdrop-blur-md',
+        "relative z-[60] mx-auto hidden w-full max-w-7xl flex-row items-center justify-between self-start rounded-full bg-transparent px-4 py-2 lg:flex",
+        visible && "bg-surface/80",
         className,
       )}
     >
       {children}
     </motion.div>
   );
-}
+};
 
-export function NavItems({ items, className }: NavItemsProps) {
+export const NavItems = ({ items, className, onItemClick }: NavItemsProps) => {
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
-    <div className={cn('flex items-center gap-6', className)}>
-      {items.map((item) => (
+    <motion.div
+      onMouseLeave={() => setHovered(null)}
+      className={cn(
+        "absolute inset-0 hidden flex-1 flex-row items-center justify-center space-x-2 text-sm font-medium text-foreground/70 transition duration-200 hover:text-foreground lg:flex lg:space-x-2",
+        className,
+      )}
+    >
+      {items.map((item, idx) => (
         <a
-          key={item.link}
+          onMouseEnter={() => setHovered(idx)}
+          onClick={onItemClick}
+          className="relative px-4 py-2 text-foreground/70"
+          key={`link-${idx}`}
           href={item.link}
-          className="font-body text-sm text-ink/85 transition-colors hover:text-accent"
         >
-          {item.name}
+          {hovered === idx && (
+            <motion.div
+              layoutId="hovered"
+              className="absolute inset-0 h-full w-full rounded-full bg-accent/10"
+            />
+          )}
+          <span className="relative z-20">{item.name}</span>
         </a>
       ))}
+    </motion.div>
+  );
+};
+
+export const MobileNav = ({ children, className, visible }: MobileNavProps) => {
+  return (
+    <motion.div
+      animate={{
+        backdropFilter: visible ? "blur(10px)" : "none",
+        boxShadow: visible
+          ? "0 0 24px rgba(34, 42, 53, 0.06), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.04), 0 0 4px rgba(34, 42, 53, 0.08), 0 16px 68px rgba(47, 48, 55, 0.05), 0 1px 0 rgba(255, 255, 255, 0.1) inset"
+          : "none",
+        width: visible ? "90%" : "100%",
+        paddingRight: visible ? "12px" : "0px",
+        paddingLeft: visible ? "12px" : "0px",
+        borderRadius: visible ? "4px" : "2rem",
+        y: visible ? 20 : 0,
+      }}
+      transition={{
+        type: "spring",
+        stiffness: 200,
+        damping: 50,
+      }}
+      className={cn(
+        "relative z-50 mx-auto flex w-full max-w-[calc(100vw-2rem)] flex-col items-center justify-between bg-transparent px-0 py-2 lg:hidden",
+        visible && "bg-surface/80",
+        className,
+      )}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+export const MobileNavHeader = ({
+  children,
+  className,
+}: MobileNavHeaderProps) => {
+  return (
+    <div
+      className={cn(
+        "flex w-full flex-row items-center justify-between",
+        className,
+      )}
+    >
+      {children}
     </div>
   );
-}
+};
+
+export const MobileNavMenu = ({
+  children,
+  className,
+  isOpen,
+  onClose,
+}: MobileNavMenuProps) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className={cn(
+            "absolute inset-x-0 top-16 z-50 flex w-full flex-col items-start justify-start gap-4 rounded-panel bg-surface px-4 py-8 shadow-[0_0_24px_rgba(0,_0,_0,_0.2)]",
+            className,
+          )}
+        >
+          {children}
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
+export const MobileNavToggle = ({
+  isOpen,
+  onClick,
+}: {
+  isOpen: boolean;
+  onClick: () => void;
+}) => {
+  return isOpen ? (
+    <IconX className="text-foreground" onClick={onClick} />
+  ) : (
+    <IconMenu2 className="text-foreground" onClick={onClick} />
+  );
+};
+
+export const NavbarLogo = () => {
+  return (
+    <a
+      href="/"
+      className="relative z-20 mr-4 flex items-center px-2 py-1 font-display text-sm font-semibold text-foreground"
+    >
+      Paul Witkowski
+    </a>
+  );
+};
+
+export const NavbarButton = ({
+  href,
+  as: Tag = "a",
+  children,
+  className,
+  variant = "primary",
+  ...props
+}: {
+  href?: string;
+  as?: React.ElementType;
+  children: React.ReactNode;
+  className?: string;
+  variant?: "primary" | "secondary" | "dark" | "gradient";
+} & (
+  | React.ComponentPropsWithoutRef<"a">
+  | React.ComponentPropsWithoutRef<"button">
+)) => {
+  const baseStyles =
+    "px-4 py-2 rounded-control text-sm font-medium relative cursor-pointer hover:-translate-y-0.5 transition duration-200 inline-block text-center";
+
+  const variantStyles = {
+    primary: "bg-accent text-white",
+    secondary: "bg-transparent text-foreground border border-foreground/20",
+    dark: "bg-foreground text-background",
+    gradient: "bg-accent text-white",
+  };
+
+  return (
+    <Tag
+      href={href || undefined}
+      className={cn(baseStyles, variantStyles[variant], className)}
+      {...props}
+    >
+      {children}
+    </Tag>
+  );
+};

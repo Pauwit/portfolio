@@ -18,9 +18,9 @@ const projects = defineCollection({
       'Fun Stuff',
       'Private & Team',
     ]),
-    flagship: z.boolean().default(false),
-    flagshipOrder: z.number().optional(),
-    image: z.string().optional(),
+    flagship: z.boolean(),
+    flagshipOrder: z.number().nullable(),
+    image: z.string().nullable(),
   }),
 });
 
@@ -36,12 +36,29 @@ const timeline = defineCollection({
   }),
 });
 
-const links = defineCollection({
-  loader: file('./src/content/links.json'),
+const interestBeat = z.object({
+  title: z.string().optional(),
+  subtitle: z.string().optional(),
+  paragraph: z.string().optional(),
+  column: z.enum(['left', 'middle', 'right']).optional(),
+  images: z.array(z.string()).optional(),
+});
+
+const interests = defineCollection({
+  loader: file('./src/content/interests.json'),
   schema: z.object({
-    github: z.string().url(),
-    linkedin: z.string().url(),
+    name: z.string(),
+    beats: z.array(interestBeat),
   }),
 });
 
-export const collections = { projects, timeline, links };
+const links = defineCollection({
+  loader: file('./src/content/links.json'),
+  schema: z.object({
+    label: z.string(),
+    url: z.string().url(),
+    icon: z.string(),
+  }),
+});
+
+export const collections = { projects, timeline, interests, links };

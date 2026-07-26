@@ -1,16 +1,19 @@
 ---
-import { getEntry } from 'astro:content';
-import { siteConfig } from '../site.config';
+import linksData from '@/content/links.json';
 
-const links = await getEntry('links', 'links');
+const links = linksData as { id: string; label: string; url: string; icon: string }[];
 const year = new Date().getFullYear();
 ---
-<footer class="border-t border-ink/10 px-6 py-8 text-sm text-ink/70">
-  <div class="flex flex-wrap items-center justify-between gap-4">
-    <p>&copy; {year} {siteConfig.name}. Built with Astro.</p>
-    <div class="flex gap-4">
-      <a href={links?.data.github} class="transition-colors hover:text-accent">GitHub</a>
-      <a href={links?.data.linkedin} class="transition-colors hover:text-accent">LinkedIn</a>
-    </div>
+
+<footer class="border-t border-foreground/10 px-6 py-10 md:px-12">
+  <div class="mx-auto flex max-w-6xl flex-col items-start justify-between gap-4 text-sm text-foreground/60 md:flex-row md:items-center">
+    <p>&copy; {year} Paul Witkowski. Built with Astro.</p>
+    <nav class="flex gap-6">
+      {links.map((link) => (
+        <a href={link.url} target="_blank" rel="noreferrer" class="hover:text-foreground">
+          {link.label}
+        </a>
+      ))}
+    </nav>
   </div>
 </footer>

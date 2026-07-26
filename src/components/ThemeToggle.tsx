@@ -1,34 +1,35 @@
 import { useEffect, useState } from 'react';
-import { getPreferredTheme, setTheme, type Theme } from '../lib/theme';
+import { applyTheme, resolveInitialTheme, type Theme } from '@/lib/theme';
 
 export default function ThemeToggle() {
-  const [theme, setThemeState] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme | null>(null);
 
   useEffect(() => {
-    setThemeState(getPreferredTheme());
+    setTheme(resolveInitialTheme());
   }, []);
 
-  function toggle() {
-    const next: Theme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    setThemeState(next);
-  }
+  if (!theme) return <div className="h-9 w-9" aria-hidden="true" />;
+
+  const next: Theme = theme === 'dark' ? 'light' : 'dark';
 
   return (
     <button
       type="button"
-      onClick={toggle}
-      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-      className="flex h-8 w-8 items-center justify-center rounded-chip text-ink/85 transition-colors hover:text-accent"
+      onClick={() => {
+        applyTheme(next);
+        setTheme(next);
+      }}
+      aria-label={`Switch to ${next} theme`}
+      className="flex h-9 w-9 items-center justify-center rounded-control text-foreground/70 transition hover:text-foreground"
     >
       {theme === 'dark' ? (
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="4" />
-          <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
         </svg>
       ) : (
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       )}
     </button>

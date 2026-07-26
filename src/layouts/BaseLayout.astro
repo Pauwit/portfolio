@@ -1,45 +1,47 @@
 ---
-import '../styles/global.css';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer.astro';
-import { siteConfig } from '../site.config';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer.astro';
+import { siteConfig } from '@/site.config';
+import { noFlashThemeScript } from '@/lib/theme';
+import '@/styles/global.css';
 
 interface Props {
   title: string;
-  description: string;
+  description?: string;
+  ogImage?: string;
 }
 
-const { title, description } = Astro.props;
-const ogImageUrl = new URL(siteConfig.ogImagePath, Astro.site);
+const { title, description = siteConfig.description, ogImage = siteConfig.ogImage } = Astro.props;
+const pageTitle = `${title} — ${siteConfig.name}`;
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
+const ogImageUrl = new URL(ogImage, siteConfig.url).toString();
 ---
+
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImageUrl} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+
     <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <script is:inline>
-      (function () {
-        var stored = localStorage.getItem('theme');
-        var theme = stored === 'light' || stored === 'dark'
-          ? stored
-          : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      })();
-    </script>
-    <!-- Analytics insertion point: no script wired yet. When adding a cookie-less
-         analytics tool later (e.g. Plausible/Umami), its script tag goes here. -->
+
+    <script is:inline set:html={noFlashThemeScript} />
   </head>
-  <body class="font-body bg-bg text-ink">
+  <body>
     <Navbar client:load />
     <main>
       <slot />

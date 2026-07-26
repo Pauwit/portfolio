@@ -1,7 +1,10 @@
 export const siteConfig = {
   name: 'Paul Witkowski',
-  tagline: 'AI & Systems engineer building end to end, from model to shell.',
+  tagline: 'AI & Systems Engineer building things from the model down to the compiler underneath it.',
+  description:
+    'Portfolio of Paul Witkowski, AI & Systems Engineering student at EPITA (SCIA) — medical computer vision, data infrastructure, and from-scratch systems.',
+  url: 'https://paulwitkowski.com',
   cvPath: '/cv/paul-witkowski-cv.pdf',
   formspreeEndpoint: 'https://formspree.io/f/mvzbdjny',
-  ogImagePath: '/og-image.png',
+  ogImage: '/og-image.png',
 };

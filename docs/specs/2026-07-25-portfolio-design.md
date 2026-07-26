@@ -52,18 +52,22 @@ A 12-column grid underlies every page. Content spans vary in width (hero splits 
 
 ### Motion inventory (final)
 
-| Where | Component/effect | Source |
-|---|---|---|
-| Hero headline | Text Effect (word/blur reveal) | Motion Primitives |
-| Hero/section background | Spotlight (cursor-following radial light) | Aceternity |
-| Navbar | Resizable Navbar (shrinks on scroll; ships with translucent/frosted background by default) | Aceternity |
-| Project cards (public) | 3D Card Effect (perspective tilt on hover) | Aceternity |
-| Private-repo cards | Card Flip (front = teaser, back = case-study text) | Kokonut UI |
-| Scroll reveals | Fade+slide-up (single elements), staggered-lines (grouped content) | Motion Primitives (Animated Group / in-view) |
-| Project images | Plain scale + shadow-lift on hover (no color treatment) | Hand-built (CSS) |
-| Me-page timeline | Timeline (sticky label, connecting line) | Aceternity |
-| Interests page | Parallax Scroll (3-column masonry, independently-speed columns) with embedded text — see §5 | Aceternity, extended |
-| Contact form | Form/Input/Textarea/Button primitives, deliberately un-animated | shadcn/ui |
+Every row below is a real, named component with a real install command — none of these get hand-built from a description. If an install command turns out stale by the time a phase implements it, stop and ask for a current one rather than reconstructing the component from memory.
+
+| Where | Component/effect | Source | Install command |
+|---|---|---|---|
+| Hero headline | Text Effect (word/blur reveal) | Motion Primitives | `npx shadcn@latest add "https://motion-primitives.com/c/text-effect.json"` |
+| Hero/section background | Spotlight (cursor-following radial light) | Aceternity | `npx shadcn@latest add @aceternity/spotlight-demo` |
+| Navbar | Resizable Navbar (shrinks on scroll; ships with translucent/frosted background by default) | Aceternity | `npx shadcn@latest add @aceternity/resizable-navbar-demo` |
+| Project cards (public) | 3D Card Effect (perspective tilt on hover) | Aceternity | `npx shadcn@latest add @aceternity/3d-card-demo` |
+| Private-repo cards | Card Flip (front = teaser, back = case-study text) | Kokonut UI | `npx shadcn@latest add @kokonutui/card-flip` |
+| Scroll reveals | Fade+slide-up (single elements), staggered-lines (grouped content) | Motion Primitives (Animated Group) | `npx shadcn@latest add "https://motion-primitives.com/c/animated-group.json"` |
+| Project images | Plain scale + shadow-lift on hover (no color treatment) | Hand-built (CSS) | n/a — intentionally not a library component |
+| Me-page timeline | Timeline (sticky label, connecting line) | Aceternity | `npx shadcn@latest add @aceternity/timeline-demo` |
+| Interests page | Parallax Scroll (3-column masonry, independently-speed columns) with embedded text — see §5 | Aceternity, extended | `npx shadcn@latest add @aceternity/parallax-scroll-demo` |
+| Contact form | Form/Input/Textarea/Button primitives, deliberately un-animated | shadcn/ui, with **React Hook Form** + Zod resolver | `npx shadcn@latest add form input textarea button` |
+
+All installs use npm (project convention). Components may be modified to match the Midnight Editorial palette/tokens and moved to fit this project's file structure — that's expected, not a deviation. If a component's shadcn install pulls in dependencies beyond what's needed, it's fine to install it into a scratch/temporary project first, copy over only the component code actually used, and skip adding the unused dependencies here.
 
 ### `prefers-reduced-motion` fallback (every item above has one; nothing essential depends on motion)
 

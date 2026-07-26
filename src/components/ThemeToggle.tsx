@@ -20,7 +20,7 @@ export default function ThemeToggle() {
         setTheme(next);
       }}
       aria-label={`Switch to ${next} theme`}
-      className="flex h-9 w-9 items-center justify-center rounded-control text-foreground/70 transition hover:text-foreground"
+      className="relative z-20 flex h-9 w-9 items-center justify-center rounded-control text-foreground/70 transition hover:text-foreground"
     >
       {theme === 'dark' ? (
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2">

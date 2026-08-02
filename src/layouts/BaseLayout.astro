@@ -52,7 +52,7 @@ const ogImageUrl = new URL(ogImage, siteConfig.url).toString();
       <Spotlight className="-top-40 left-0 md:left-40" fill="#95122C" />
     </div>
     <Navbar client:load />
-    <main class="relative z-10">
+    <main class="relative z-10" transition:animate="fade">
       <slot />
     </main>
     <Footer />

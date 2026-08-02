@@ -113,4 +113,13 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+
+  /* View Transition pseudo-elements live outside the normal DOM tree, so the
+     universal selector above doesn't reach them; page transitions become an
+     instant swap instead of a cross-fade. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0.01ms !important;
+  }
 }

@@ -1,8 +1,10 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import MeTimeline from '@/components/MeTimeline';
 import { siteConfig } from '@/site.config';
+import portrait from '@/assets/me/portrait.jpg';
 
 const allTimeline = await getCollection('timeline');
 const items = allTimeline
@@ -21,11 +23,12 @@ const items = allTimeline
   <section class="mx-auto max-w-6xl px-6 pt-40 pb-16 md:px-12">
     <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
       <div class="md:col-span-4">
-        <img
-          src="https://picsum.photos/seed/paul-portrait/480/480"
+        <Image
+          src={portrait}
           alt="Portrait of Paul Witkowski"
-          width="240"
-          height="240"
+          width={480}
+          height={480}
+          loading="eager"
           class="h-60 w-60 rounded-full object-cover"
         />
       </div>

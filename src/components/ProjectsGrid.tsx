@@ -50,11 +50,12 @@ export default function ProjectsGrid({ projects }: { projects: ProjectItem[] }) 
         ))}
       </div>
 
-      <div className="mt-10 grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-10 columns-1 gap-6 sm:columns-2 lg:columns-3">
         {filtered.map((project) =>
           project.visibility === 'private' ? (
             <CardFlip
               key={project.title}
+              className="mb-6 break-inside-avoid"
               title={project.title}
               subtitle={project.category}
               description={project.summary}
@@ -63,6 +64,7 @@ export default function ProjectsGrid({ projects }: { projects: ProjectItem[] }) 
           ) : (
             <ProjectCard3D
               key={project.title}
+              className="mb-6 break-inside-avoid"
               title={project.title}
               summary={project.summary}
               stack={project.stack}

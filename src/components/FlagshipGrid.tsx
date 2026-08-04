@@ -26,7 +26,7 @@ export default function FlagshipGrid({ projects }: { projects: FlagshipProject[]
   // reveal as it scrolls into view.
   return (
     <AnimatedGroup preset="blur-slide">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
+      <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-12">
         {projects.map((project) => (
           <ProjectCard3D
             key={project.title}

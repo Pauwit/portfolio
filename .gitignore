@@ -10,3 +10,11 @@ context/
 .superpowers/
 .claude/
 .impeccable/
+
+# Loose reference material dropped directly in docs/ (CV drafts, raw photos,
+# source PDFs) — docs/specs/ and docs/plans/ stay tracked as normal.
+docs/*.md
+docs/*.pdf
+docs/*.jpg
+docs/*.jpeg
+docs/*.png

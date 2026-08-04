@@ -12,8 +12,9 @@ context/
 .impeccable/
 
 # Loose reference material dropped directly in docs/ (CV drafts, raw photos,
-# source PDFs) — docs/specs/ and docs/plans/ stay tracked as normal.
+# source PDFs) — docs/specs/, docs/plans/, and docs/HANDOFF.md stay tracked.
 docs/*.md
+!docs/HANDOFF.md
 docs/*.pdf
 docs/*.jpg
 docs/*.jpeg

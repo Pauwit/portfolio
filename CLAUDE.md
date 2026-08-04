@@ -4,9 +4,10 @@ Personal portfolio site for Paul Witkowski. Astro, static output, deployed to Gi
 
 ## Orientation
 
-- **Design spec:** `docs/specs/2026-07-25-portfolio-design.md` — every content, visual, and tech decision. Read this first in a new session; it needs no other context.
-- **Implementation plans:** `docs/plans/YYYY-MM-DD-<phase>.md`, one per build phase. Each plan is self-contained (constraints copied in, complete code per task).
-- **Build phases:** 1. Foundation (done) → 2. Home + Projects → 3. Me + Timeline → 4. Interests parallax → 5. Contact + polish. Update this list's status as phases complete.
+- **Handoff/status:** `docs/HANDOFF.md` — current build state, decisions made, bugs already fixed (don't reintroduce), what's left, key file paths. Read this first in a new session.
+- **Design spec:** `docs/specs/2026-07-25-portfolio-design.md` — every content, visual, and tech decision. Read this second; it needs no other context.
+- **Implementation plans:** `docs/plans/YYYY-MM-DD-<phase>.md`, one per build phase, when phases are planned individually. The `rebuild/midnight-editorial` branch instead did a full spec rebuild in one pass (single branch, no per-phase worktrees) — see `docs/HANDOFF.md` for how that diverged from the pipeline below.
+- **Build phases:** superseded by the full rebuild on `rebuild/midnight-editorial` — see `docs/HANDOFF.md` for current status. Not merged to `main` yet.
 - `context/` holds raw source material (LinkedIn export, project recap, repo list) used to write real copy — never committed, gitignored.
 
 ## Git conventions

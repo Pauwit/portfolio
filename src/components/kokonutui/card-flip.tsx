@@ -10,8 +10,8 @@
  * @github: https://github.com/kokonut-labs/kokonutui
  */
 
-import { ArrowRight, Repeat2 } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, ChevronDown, Repeat2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { prefersReducedMotion } from "@/lib/reducedMotion";
 
@@ -31,7 +31,25 @@ export default function CardFlip({
   className,
 }: CardFlipProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [canScroll, setCanScroll] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const reduced = prefersReducedMotion();
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const checkOverflow = () => {
+      setCanScroll(el.scrollHeight - el.clientHeight > 4 && el.scrollTop + el.clientHeight < el.scrollHeight - 4);
+    };
+    checkOverflow();
+    el.addEventListener("scroll", checkOverflow);
+    const resizeObserver = new ResizeObserver(checkOverflow);
+    resizeObserver.observe(el);
+    return () => {
+      el.removeEventListener("scroll", checkOverflow);
+      resizeObserver.disconnect();
+    };
+  }, [isFlipped]);
 
   return (
     <div
@@ -132,37 +150,48 @@ export default function CardFlip({
             "group-hover:shadow-lg"
           )}
         >
-          <div className="flex-1 space-y-6">
-            <div className="space-y-2">
-              <h3 className="font-display font-semibold text-lg text-foreground leading-snug tracking-tight transition-transform duration-500 ease-out-expo group-hover:translate-y-[-2px]">
-                {title}
-              </h3>
-              <p className="line-clamp-2 text-sm text-foreground/60 tracking-tight transition-transform duration-500 ease-out-expo group-hover:translate-y-[-2px]">
-                {description}
-              </p>
+          <div className="relative min-h-0 flex-1">
+            <div ref={scrollRef} className="thin-scrollbar h-full space-y-6 overflow-y-auto pr-1">
+              <div className="space-y-2">
+                <h3 className="font-display font-semibold text-lg text-foreground leading-snug tracking-tight transition-transform duration-500 ease-out-expo group-hover:translate-y-[-2px]">
+                  {title}
+                </h3>
+                <p className="text-sm text-foreground/60 tracking-tight transition-transform duration-500 ease-out-expo group-hover:translate-y-[-2px]">
+                  {description}
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                {features.map((feature, index) => (
+                  <div
+                    className="flex items-center gap-2 text-sm text-foreground/70 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                    key={feature}
+                    style={{
+                      transform: isFlipped
+                        ? "translateX(0)"
+                        : "translateX(-10px)",
+                      opacity: isFlipped ? 1 : 0,
+                      transitionDelay: `${index * 50 + 150}ms`,
+                    }}
+                  >
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="h-3 w-3 text-accent"
+                    />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <div className="space-y-2">
-              {features.map((feature, index) => (
-                <div
-                  className="flex items-center gap-2 text-sm text-foreground/70 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
-                  key={feature}
-                  style={{
-                    transform: isFlipped
-                      ? "translateX(0)"
-                      : "translateX(-10px)",
-                    opacity: isFlipped ? 1 : 0,
-                    transitionDelay: `${index * 50 + 150}ms`,
-                  }}
-                >
-                  <ArrowRight
-                    aria-hidden="true"
-                    className="h-3 w-3 text-accent"
-                  />
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
+            {canScroll && (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center bg-gradient-to-t from-surface to-transparent pt-4 pb-1"
+              >
+                <ChevronDown className="h-4 w-4 animate-pulse text-accent motion-reduce:animate-none" />
+              </div>
+            )}
           </div>
 
           <div className="mt-6 border-foreground/10 border-t pt-6">

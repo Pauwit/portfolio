@@ -152,11 +152,18 @@ export default function CardFlip({
         >
           <div className="relative min-h-0 flex-1">
             <div ref={scrollRef} className="thin-scrollbar h-full space-y-6 overflow-y-auto pr-1">
-              <div className="space-y-2">
-                <h3 className="font-display font-semibold text-lg text-foreground leading-snug tracking-tight transition-transform duration-500 ease-out-expo group-hover:translate-y-[-2px]">
+              <div
+                className="space-y-2 transition-[transform,opacity] duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                style={{
+                  opacity: isFlipped ? 1 : 0,
+                  transform: isFlipped ? "translateY(0)" : "translateY(-10px)",
+                  transitionDelay: "150ms",
+                }}
+              >
+                <h3 className="font-display font-semibold text-lg text-foreground leading-snug tracking-tight">
                   {title}
                 </h3>
-                <p className="text-sm text-foreground/60 tracking-tight transition-transform duration-500 ease-out-expo group-hover:translate-y-[-2px]">
+                <p className="text-sm text-foreground/60 tracking-tight">
                   {description}
                 </p>
               </div>

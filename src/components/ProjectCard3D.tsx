@@ -56,7 +56,7 @@ export default function ProjectCard3D({
           {summary}
         </CardItem>
         <CardItem translateZ={20} className="mt-4 flex flex-wrap gap-2">
-          {stack.slice(0, 4).map((tech) => (
+          {stack.slice(0, 20).map((tech) => (
             <span key={tech} className="rounded-control bg-background px-2 py-1 text-xs text-foreground/60">
               {tech}
             </span>

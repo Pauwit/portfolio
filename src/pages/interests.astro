@@ -1,17 +1,26 @@
 ---
-import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import InterestsParallax from '@/components/InterestsParallax';
 
-const allInterests = await getCollection('interests');
-const interests = allInterests.map((i: CollectionEntry<'interests'>) => ({
-  name: i.data.name,
-  beats: i.data.beats,
-}));
+// Parallax build in progress — restore this block once the page is ready:
+// import { getCollection, type CollectionEntry } from 'astro:content';
+// import InterestsParallax from '@/components/InterestsParallax';
+//
+// const allInterests = await getCollection('interests');
+// const interests = allInterests.map((i: CollectionEntry<'interests'>) => ({
+//   name: i.data.name,
+//   beats: i.data.beats,
+// }));
 ---
 
 <BaseLayout title="Interests" description="Photography, drums, and tennis: what Paul Witkowski does outside of engineering.">
+  <section class="mx-auto flex min-h-[60vh] max-w-6xl flex-col items-start justify-center px-6 md:px-12">
+    <h1 class="font-display text-4xl font-bold">Coming soon</h1>
+    <p class="mt-4 max-w-md text-foreground/70">This page is still in progress. Check back soon.</p>
+  </section>
+
+  <!-- Restore once ready:
   <div class="pt-24">
     <InterestsParallax client:load interests={interests} />
   </div>
+  -->
 </BaseLayout>

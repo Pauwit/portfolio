@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { title, description = siteConfig.description, ogImage = siteConfig.ogImage } = Astro.props;
-const pageTitle = `${title} — ${siteConfig.name}`;
+const pageTitle = `${title} - ${siteConfig.name}`;
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.url).toString();
 const ogImageUrl = new URL(ogImage, siteConfig.url).toString();
 ---

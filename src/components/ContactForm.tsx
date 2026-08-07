@@ -45,7 +45,7 @@ export default function ContactForm({ formspreeEndpoint }: { formspreeEndpoint: 
   }
 
   if (status === 'sent') {
-    return <p className="text-foreground/70">Thanks — your message is on its way. I'll get back to you soon.</p>;
+    return <p className="text-foreground/70">Thanks! Your message is on its way. I'll get back to you soon.</p>;
   }
 
   return (

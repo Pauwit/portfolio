@@ -14,7 +14,7 @@ A multi-page personal portfolio for Paul Witkowski (AI & Systems Engineering stu
 - **Styling:** Tailwind CSS.
 - **Content-as-data** via Astro content collections (Zod-validated frontmatter), so content edits never touch layout code:
   - `src/content/projects/*.md` — one file per project. Frontmatter: `title`, `summary`, `stack[]`, `githubUrl` (nullable), `visibility: "public" | "private"`, `category` (Flagship / Hackathons / Medical CV & Research / Systems & From-scratch / Tools / Fun Stuff / Private & Team), `flagship: boolean`, `flagshipOrder`, `image` (nullable).
-  - `src/content/timeline/*.md` — one file per Me-page entry. Frontmatter: `startDate`, `endDate` (nullable = present), `title`, `org`, `kind: "education" | "work" | "teaching" | "volunteer" | "project-checkpoint"`, `description`.
+  - `src/content/timeline/*.md` — one file per Me-page entry. Frontmatter: `startDate`, `endDate` (nullable = present), `title`, `org`, `kind: "education" | "work" | "teaching" | "volunteer" | "hackathon"`, `description`.
   - `src/content/interests.json` — ordered list of interests, each an ordered list of "beats" (`title` or `subtitle`, optional `paragraph` + target column, `images[]`). JSON rather than per-file Markdown since the data is a structured beat/column array, not prose.
   - `src/content/links.json` — GitHub/LinkedIn/etc., reused across Home/Contact/footer.
   - `src/site.config.ts` — site name, tagline, CV path, Formspree endpoint, OG defaults.

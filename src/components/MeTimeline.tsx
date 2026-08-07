@@ -15,7 +15,8 @@ function formatRange(startDate: string, endDate: string | null) {
     const date = new Date(Number(year), Number(month) - 1);
     return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
   };
-  return `${format(startDate)} — ${endDate ? format(endDate) : 'Present'}`;
+  if (startDate === endDate) return format(startDate);
+  return `${format(startDate)} - ${endDate ? format(endDate) : 'Present'}`;
 }
 
 export default function MeTimeline({ items }: { items: TimelineItem[] }) {

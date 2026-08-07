@@ -4,7 +4,7 @@ summary: Detects empty shelf space from a photo, forecasts demand, and has an LL
 stack: ["Azure Custom Vision", "Azure Machine Learning", Python, Docker, "LLM Agent", MCP]
 githubUrl: "https://github.com/Pauwit/azure-demo"
 visibility: public
-category: "Systems & From-scratch"
+category: Systems
 flagship: false
 flagshipOrder: null
 image: null

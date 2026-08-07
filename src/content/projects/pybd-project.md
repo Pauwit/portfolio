@@ -1,10 +1,10 @@
 ---
 title: "PYBD Stock Data Pipeline"
 summary: A stock market data pipeline merging two mismatched real-world sources into a Dash dashboard with Bollinger Bands and normalized performance comparison.
-stack: [Python, Pandas, Dash, "Docker Compose"]
+stack: [Python, Pandas, Dash, Docker]
 githubUrl: "https://github.com/Pauwit/PYBD-Project"
 visibility: public
-category: "Systems & From-scratch"
+category: Systems
 flagship: false
 flagshipOrder: null
 image: null

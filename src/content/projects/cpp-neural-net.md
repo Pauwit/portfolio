@@ -1,10 +1,10 @@
 ---
 title: "Neural Network From Scratch"
 summary: A feedforward neural network written from scratch in C++, no ML libraries, trained on MNIST to classify handwritten digits.
-stack: ["C++17", CMake]
+stack: ["C++", CMake]
 githubUrl: "https://github.com/Pauwit/cpp-neural-net"
 visibility: public
-category: "Systems & From-scratch"
+category: From-scratch
 flagship: false
 flagshipOrder: null
 image: null

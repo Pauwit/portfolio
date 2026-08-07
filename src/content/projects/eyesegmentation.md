@@ -4,7 +4,7 @@ summary: End-to-end segmentation and classification pipeline for retinal Doppler
 stack: [Python, PyTorch, "Ultralytics YOLO11", Jupyter, "Hugging Face"]
 githubUrl: "https://github.com/Pauwit/EyeSegmentation"
 visibility: public
-category: Flagship
+category: "Medical & Research"
 flagship: true
 flagshipOrder: 1
 image: null

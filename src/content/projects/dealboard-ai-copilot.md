@@ -4,7 +4,7 @@ summary: A real-time AI copilot wired into Google Workspace that briefs you befo
 stack: ["Next.js", TypeScript, "Tailwind CSS", "Node.js", Express, "Gemini API"]
 githubUrl: "https://github.com/Pauwit/Gemini-3-Hackathon-Paris"
 visibility: public
-category: Flagship
+category: Hackathons
 flagship: true
 flagshipOrder: 2
 image: null

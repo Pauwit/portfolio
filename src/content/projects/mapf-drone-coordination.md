@@ -4,7 +4,7 @@ summary: Collision-free trajectory planning for a drone fleet in continuous 3D a
 stack: [Python, "CP-SAT", Flask, "Three.js", Jupyter]
 githubUrl: "https://github.com/Pauwit/mapf-drone-coordination"
 visibility: public
-category: "Systems & From-scratch"
+category: Systems
 flagship: false
 flagshipOrder: null
 image: null

@@ -1,5 +1,5 @@
 ---
-title: "CurriculumGap Agent (YAKAP)"
+title: "CurriculumGap Agent"
 summary: A 5-agent pipeline that continuously audits course curricula against the job market and state of the art, hallucination-checked. Placed 3rd at Hackathon IA Agentique.
 stack: ["Next.js", "React", "Tailwind CSS", "LLM Agents", "vLLM"]
 githubUrl: "https://github.com/joannejab/Hackathon-IA-Agentique-YAKAP"

@@ -1,10 +1,10 @@
 ---
 title: Real-Time Forest Fire Detection Architecture
-summary: A full data architecture and working proof-of-concept for IoT-scale wildfire detection, ~10M devices, ~200GB/day, with conflicting sub-second alerting and long-term analytics requirements.
-stack: [Kafka, "Spark Structured Streaming", "Akka HTTP", HDFS, Scala]
+summary: A full data architecture and working proof-of-concept for IoT-scale wildfire detection, ~10M devices, ~200GB/day, with sub-second alerting and long-term analytics requirements.
+stack: [Scala, Kafka, "Spark Structured Streaming", "Akka HTTP", HDFS]
 githubUrl: null
 visibility: private
-category: Flagship
+category: Systems
 flagship: true
 flagshipOrder: 3
 image: null

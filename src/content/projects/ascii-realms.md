@@ -1,10 +1,10 @@
 ---
 title: "ASCII Realms"
 summary: A turn-based RPG that runs entirely in the terminal, with a 51x51 procedurally generated world, combat, enemy AI, and looting.
-stack: ["C++17", CMake, "Perlin Noise"]
+stack: ["C++", CMake, "Perlin Noise"]
 githubUrl: "https://github.com/Pauwit/ascii-realms"
 visibility: public
-category: "Systems & From-scratch"
+category: "Fun Stuff"
 flagship: false
 flagshipOrder: null
 image: null

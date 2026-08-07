@@ -1,10 +1,10 @@
 ---
 title: PING
-summary: A collaborative code repository and project management platform, essentially a small GitHub clone, built with a team of five.
+summary: A collaborative code repository and project management platform, built with a team of five.
 stack: [Java, Quarkus, PostgreSQL, JGit, React, TypeScript, Docker]
 githubUrl: null
 visibility: private
-category: "Private & Team"
+category: "Private Projects"
 flagship: false
 flagshipOrder: null
 image: null

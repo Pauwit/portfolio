@@ -4,7 +4,7 @@ summary: A GraphRAG pipeline combining knowledge graphs with LLMs for multi-hop 
 stack: [Python, FastAPI, "RDF/Property Graphs", LLMs]
 githubUrl: "https://github.com/Pauwit/symbolic-graphrag"
 visibility: public
-category: "Systems & From-scratch"
+category: Systems
 flagship: false
 flagshipOrder: null
 image: null

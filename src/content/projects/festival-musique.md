@@ -4,7 +4,7 @@ summary: A simulated festival management system solving forecasting, anomaly det
 stack: [Python, Kafka, Docker, "Linear Programming", WebSocket]
 githubUrl: "https://github.com/6zaille/Festival_Musique"
 visibility: public
-category: "Systems & From-scratch"
+category: Systems
 flagship: false
 flagshipOrder: null
 image: null

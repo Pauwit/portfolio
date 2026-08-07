@@ -4,7 +4,7 @@ summary: A complete compiler for the Tiger language targeting LLVM IR, built fro
 stack: ["C++", LLVM, Bison, "RE/flex", Autotools]
 githubUrl: null
 visibility: private
-category: Flagship
+category: From-scratch
 flagship: true
 flagshipOrder: 4
 image: null

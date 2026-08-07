@@ -4,7 +4,7 @@ summary: A distributed micro-blogging platform built as five event-driven micros
 stack: ["Java 21", "Quarkus 3", MongoDB, Neo4j, Elasticsearch, Redis, Kubernetes]
 githubUrl: null
 visibility: private
-category: "Private & Team"
+category: "Private Projects"
 flagship: false
 flagshipOrder: null
 image: null

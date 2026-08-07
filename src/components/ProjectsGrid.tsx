@@ -14,13 +14,13 @@ export interface ProjectItem {
 
 const CATEGORIES = [
   'All',
-  'Flagship',
   'Hackathons',
-  'Medical CV & Research',
-  'Systems & From-scratch',
+  'Medical & Research',
+  'Systems',
+  'From-scratch',
   'Tools',
   'Fun Stuff',
-  'Private & Team',
+  'Private Projects',
 ] as const;
 
 export default function ProjectsGrid({ projects }: { projects: ProjectItem[] }) {

@@ -4,7 +4,7 @@ summary: Modernized a C implementation of the Diffeomorphic Demons medical image
 stack: ["C++", FFTW, CMake]
 githubUrl: "https://github.com/Drdaag/cpp-diffeomorphicDemon"
 visibility: public
-category: "Medical CV & Research"
+category: "Medical & Research"
 flagship: false
 flagshipOrder: null
 image: null

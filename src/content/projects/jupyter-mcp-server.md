@@ -1,7 +1,7 @@
 ---
 title: "Jupyter MCP Server"
-summary: An MCP server giving Claude fine-grained, structured access to Jupyter notebooks instead of dumping the whole file into context.
-stack: [Python, MCP]
+summary: A MCP server giving Claude fine-grained, structured access to Jupyter notebooks instead of dumping the whole file into context.
+stack: [Python, MCP, Claude]
 githubUrl: "https://github.com/Pauwit/jupyter-claude-integration"
 visibility: public
 category: Tools

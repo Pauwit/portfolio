@@ -5,7 +5,7 @@ Read this first in a new session. Then read [`docs/specs/2026-07-25-portfolio-de
 ## Current state
 
 - **Built and merged.** The `rebuild/midnight-editorial` rebuild is merged into `main` (and pushed). All 5 pages (Home, Me, Projects, Interests, Contact) plus 404, navbar, and footer exist. The deploy workflow (`.github/workflows/deploy.yml`) triggers on push to `main`, runs `npm run build`, and publishes to GitHub Pages at paulwitkowski.com.
-- **Branch work in progress:** `feat/ml-dl-cv-focus` (branched from `chore/deps-and-theme-tests`) is committed locally but **not merged to `main` and not pushed**. It carries the Astro 7 upgrade, the test fix, and the ML/DL/CV content refocus described below. Merging it to `main` publishes the site.
+- **Live.** The Astro 7 upgrade, test fix, and ML/DL/CV content refocus described below are merged to `main`, pushed, and deployed (deploy run green; home, Me, Projects, and the CV download verified on paulwitkowski.com). No feature branches are open.
 - **Verified before the last commit:** `npm run build` (includes `astro check`) passes with 0 errors; `npm test` passes 3/3; `npm audit` reports 0 vulnerabilities; every page returns 200 in `npm run dev` and Paul confirmed the pages work by hand.
 
 ## Positioning (changed from the original spec)
@@ -19,6 +19,7 @@ The site now leads with **machine learning, deep learning, and computer vision**
 
 ## Decisions and conventions (condensed — see spec for full detail)
 
+- **Node:** Astro 7 requires Node >=22.22.0. The deploy workflow pins `node-version: 22`; an older Node in CI fails the build with "Node.js … is not supported by Astro".
 - **Stack:** Astro 7 static output, React 19 islands (`client:load` for above-the-fold/interactive-critical, `client:visible` for below-the-fold), Tailwind v4, content collections for `projects`/`timeline`/`interests`/`links`.
 - **Content schema** is in `src/content.config.ts` and imports `z` from `astro/zod` (Astro 7's bundled Zod 4; `astro:content`'s `z` is deprecated). The contact form still uses the project's own `zod@3` + `@hookform/resolvers@3` — don't mix the two.
 - **Tokens:** `src/styles/global.css` — `--color-background/surface/foreground/accent`, light is the default `:root`, `:root.dark` overrides. `--radius-panel` (12px) vs `--radius-control` (8px). Single accent `#95122C` in both themes, never for small body text.
@@ -41,6 +42,7 @@ The site now leads with **machine learning, deep learning, and computer vision**
 - **Firefox slow navigations:** default link prefetching; fixed with `prefetch: false`.
 - **View-transition fallback never animated:** `<ClientRouter fallback="animate">` needs an explicit `transition:animate` directive on an element (now on `<main>`).
 - **Dev-only "Failed to fetch dynamically imported module" after nav clicks:** a Vite dev-server artifact (breaks hydration in `npm run dev` only); confirmed not present in a production build + `astro preview`. Left alone deliberately.
+- **Deploy failing after the Astro 7 upgrade:** `deploy.yml` was on Node 20; fixed by pinning Node 22 (see *Decisions*).
 - **Theme tests failing on Node 26:** fixed by the `localStorage` polyfill in `tests/setup.ts` (see above).
 
 ## What's left
@@ -54,6 +56,10 @@ The site now leads with **machine learning, deep learning, and computer vision**
 - The hackathon dates in the consolidated `hackathons-checkpoint.md` timeline entry (Nov 2025 – May 2026) are approximate.
 - Whether `jangu` and the NetLogo `SMA` coursework should stay off the Projects page (excluded earlier as not polished enough; never explicitly confirmed).
 - Whether forest-fire / Tiger / 42sh should be made public so their cards can link out (forest-fire's own text says it will be).
+
+**CI housekeeping (non-blocking warnings in the deploy log):**
+- `actions/checkout@v4`, `actions/setup-node@v4`, `actions/upload-artifact@v4` target the deprecated Node 20 runtime and are being forced onto Node 24; bump them to newer majors when convenient.
+- GitHub's `ubuntu-latest` label migrates to Ubuntu 26 from 2026-10-19; if a deploy fails after that, check there first.
 
 **Deliberately not done:**
 - No real Formspree submission test (code path verified, never sent to the live inbox).

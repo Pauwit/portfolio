@@ -1,4 +1,5 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection } from 'astro:content';
+import { z } from 'astro/zod';
 import { glob, file } from 'astro/loaders';
 
 const projects = defineCollection({
@@ -7,7 +8,7 @@ const projects = defineCollection({
     title: z.string(),
     summary: z.string(),
     stack: z.array(z.string()),
-    githubUrl: z.string().url().nullable(),
+    githubUrl: z.url().nullable(),
     visibility: z.enum(['public', 'private']),
     category: z.enum([
       'Hackathons',
@@ -56,7 +57,7 @@ const links = defineCollection({
   loader: file('./src/content/links.json'),
   schema: z.object({
     label: z.string(),
-    url: z.string().url(),
+    url: z.url(),
     icon: z.string(),
   }),
 });

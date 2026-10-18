@@ -10,11 +10,13 @@ interface HeroLink {
 export default function Hero({
   tagline,
   description,
+  availability,
   cvPath,
   links,
 }: {
   tagline: string;
   description: string;
+  availability: string;
   cvPath: string;
   links: HeroLink[];
 }) {
@@ -28,6 +30,10 @@ export default function Hero({
 
       <AnimatedGroup preset="slide">
         <p className="mt-6 max-w-md text-foreground/70">{description}</p>
+        <p className="mt-5 flex items-center gap-2 text-sm text-foreground/80">
+          <span className="h-2 w-2 shrink-0 rounded-full bg-accent" aria-hidden="true" />
+          {availability}
+        </p>
         <div className="mt-8 flex flex-wrap gap-4">
           <a
             href={cvPath}

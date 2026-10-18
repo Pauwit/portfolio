@@ -21,7 +21,7 @@ const items = allTimeline
 
 <BaseLayout title="Me" description="Paul Witkowski's background: education, work, teaching, and volunteering.">
   <section class="mx-auto max-w-6xl px-6 pt-40 pb-16 md:px-12">
-    <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-12 md:items-center">
       <div class="md:col-span-4">
         <Image
           src={portrait}
@@ -35,25 +35,36 @@ const items = allTimeline
       <div class="md:col-span-8">
         <h1 class="font-display text-4xl font-bold text-foreground">Paul Witkowski</h1>
         <p class="mt-6 max-w-2xl text-foreground/70">
-          I'm a Master's student in AI and Systems Engineering at EPITA (SCIA major), based in Paris, focused on
+          I'm a final-year engineering student at EPITA (SCIA major, Data Science and AI), based in Paris, focused on
           machine learning, deep learning, and computer vision. My main work is in medical imaging: at Institut
           Langevin (CNRS) I trained the segmentation and classification models that now run daily in hospital
-          diagnostics at Hôpital des Quinze-Vingts, and modernized a C++ image-registration pipeline to stabilize
-          retinal video. I like understanding models from the inside, so I've also written a neural network from
+          diagnostics at Hôpital des Quinze-Vingts (Paris), and modernized a C++ image-registration pipeline to stabilize
+          retinal video.
+        </p>
+        <p class="mt-4 max-w-2xl text-foreground/70">
+          I like understanding models from the inside, so I've also written a neural network from
           scratch in C++, backpropagation included, and a compiler and POSIX shell by hand to see what happens under
-          the tools I use every day. Python and C++ are the languages I reach for.
+          the tools I use every day. Python and C++ are my main languages.
         </p>
         <p class="mt-4 max-w-2xl text-foreground/70">
           Outside coursework, I've taught as a C#/OCaml teaching assistant at EPITA, spent a semester on exchange at
-          Boston University, and interned in AI and computer vision engineering at CNRS. I participate at many hackathons and I currently volunteer with
-          Prologin, running coding workshops for middle and high school students.
+          Boston University, and interned in AI and computer vision engineering at CNRS. I participate in many hackathons and coding contests, most recently winning the Thales Battle Dev 2026
+          national algorithm contest (1st of 421 teams). I currently volunteer with Prologin, running coding workshops for middle and high school students and organizing national algorithmic competitions.
         </p>
-        <a
-          href={siteConfig.cvPath}
-          class="mt-8 inline-block rounded-control bg-accent px-5 py-3 text-sm font-medium text-white"
-        >
-          Download CV
-        </a>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a
+            href={siteConfig.cvPath}
+            class="rounded-control bg-accent px-5 py-3 text-sm font-medium text-white"
+          >
+            Download CV
+          </a>
+          <a
+            href="/contact"
+            class="rounded-control border border-foreground/20 px-5 py-3 text-sm font-medium text-foreground"
+          >
+            Contact
+          </a>
+        </div>
       </div>
     </div>
   </section>

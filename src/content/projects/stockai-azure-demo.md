@@ -2,7 +2,7 @@
 title: "StockAI"
 summary: Detects empty shelf space from a photo, forecasts demand, and has an LLM agent decide whether to restock or order from a supplier.
 stack: ["Azure Custom Vision", "Azure Machine Learning", Python, Docker, "LLM Agent", MCP]
-githubUrl: "https://github.com/Pauwit/azure-demo"
+githubUrl: "https://github.com/Pauwit/stockai"
 visibility: public
 category: Systems
 flagship: true

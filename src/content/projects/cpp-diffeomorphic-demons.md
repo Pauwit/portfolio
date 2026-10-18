@@ -5,8 +5,8 @@ stack: ["C++", FFTW, CMake]
 githubUrl: "https://github.com/Drdaag/cpp-diffeomorphicDemon"
 visibility: public
 category: "Medical & Research"
-flagship: false
-flagshipOrder: null
+flagship: true
+flagshipOrder: 2
 image: null
 ---
 

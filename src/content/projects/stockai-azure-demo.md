@@ -5,8 +5,8 @@ stack: ["Azure Custom Vision", "Azure Machine Learning", Python, Docker, "LLM Ag
 githubUrl: "https://github.com/Pauwit/azure-demo"
 visibility: public
 category: Systems
-flagship: false
-flagshipOrder: null
+flagship: true
+flagshipOrder: 4
 image: null
 ---
 

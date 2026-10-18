@@ -5,8 +5,8 @@ stack: ["Next.js", TypeScript, "Tailwind CSS", "Node.js", Express, "Gemini API"]
 githubUrl: "https://github.com/Pauwit/Gemini-3-Hackathon-Paris"
 visibility: public
 category: Hackathons
-flagship: true
-flagshipOrder: 2
+flagship: false
+flagshipOrder: null
 image: null
 ---
 

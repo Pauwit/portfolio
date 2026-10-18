@@ -5,8 +5,8 @@ stack: [Scala, Kafka, "Spark Structured Streaming", "Akka HTTP", HDFS]
 githubUrl: null
 visibility: private
 category: Systems
-flagship: true
-flagshipOrder: 3
+flagship: false
+flagshipOrder: null
 image: null
 ---
 

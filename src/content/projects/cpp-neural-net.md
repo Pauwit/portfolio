@@ -5,8 +5,8 @@ stack: ["C++", CMake]
 githubUrl: "https://github.com/Pauwit/cpp-neural-net"
 visibility: public
 category: From-scratch
-flagship: false
-flagshipOrder: null
+flagship: true
+flagshipOrder: 3
 image: null
 ---
 

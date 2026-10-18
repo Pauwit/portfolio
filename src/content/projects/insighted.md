@@ -5,8 +5,8 @@ stack: [Python, "K-Means Clustering", "Scikit-learn", Pandas, PCA]
 githubUrl: null
 visibility: private
 category: Hackathons
-flagship: false
-flagshipOrder: null
+flagship: true
+flagshipOrder: 5
 image: null
 ---
 

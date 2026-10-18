@@ -5,8 +5,8 @@ stack: ["C++", LLVM, Bison, "RE/flex", Autotools]
 githubUrl: null
 visibility: private
 category: From-scratch
-flagship: true
-flagshipOrder: 4
+flagship: false
+flagshipOrder: null
 image: null
 ---
 

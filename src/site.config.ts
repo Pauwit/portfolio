@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: 'Paul Witkowski',
-  tagline: 'AI & Systems Engineer : building things from the model down to the compiler underneath it.',
+  tagline: "Hi, I'm Paul. I teach machines to see and learn.",
   description:
-    'Portfolio of Paul Witkowski, AI & Systems Engineering student at EPITA (SCIA major). Building everything from agentic LLM tools and medical computer vision to the data infrastructure and systems underneath them.',
+    "AI & Systems Engineering student at EPITA (SCIA major), focused on machine learning, deep learning, and computer vision. My models run in daily clinical use at Hôpital des Quinze-Vingts, and I like following them from the training loop down to the C++ underneath. Python and C++ are home.",
   url: 'https://paulwitkowski.com',
   cvPath: '/cv/paul-witkowski-cv.pdf',
   formspreeEndpoint: 'https://formspree.io/f/mvzbdjny',

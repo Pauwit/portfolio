@@ -6,7 +6,7 @@ Live domain: paulwitkowski.com (GitHub Pages, custom domain via `CNAME`)
 
 ## 1. Goals
 
-A multi-page personal portfolio for Paul Witkowski (AI & Systems Engineering student, EPITA SCIA), built to read as credible to both a non-technical recruiter skimming and an engineer digging into technical depth. Visual direction: "Midnight Editorial" — near-black canvas, one wine-red accent, big display type, dramatic-but-restrained motion. Beautiful and unique, not templated; editorial restraint over decoration.
+A multi-page personal portfolio for Paul Witkowski (Data Science & AI student, EPITA SCIA), built to read as credible to both a non-technical recruiter skimming and an engineer digging into technical depth. Visual direction: "Midnight Editorial" — near-black canvas, one wine-red accent, big display type, dramatic-but-restrained motion. Beautiful and unique, not templated; editorial restraint over decoration.
 
 ## 2. Tech architecture
 

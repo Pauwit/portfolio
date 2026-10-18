@@ -4,5 +4,5 @@ endDate: null
 title: "Volunteer, Prologin Organizer"
 org: Prologin
 kind: volunteer
-description: Supervising and running introductory coding workshops for middle and high school students, as part of a volunteer team promoting computer science and diversity in tech.
+description: Supervising and running introductory coding workshops for middle and high school students, and organizing two national coding competitions with over 1,000 entrants, as part of a volunteer team promoting computer science and diversity in tech.
 ---

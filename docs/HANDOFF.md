@@ -1,73 +1,97 @@
 # Portfolio — Handoff / Status
 
-Read this first in a new session. Then read [`docs/specs/2026-07-25-portfolio-design.md`](specs/2026-07-25-portfolio-design.md) — the full design spec (palette, typography, every page's content plan, component sourcing table with install commands, asset checklist). This file is the "what's true right now" companion to that spec; the spec is the "what we're building toward" reference and needs no other context.
-
-**Branch:** `rebuild/midnight-editorial` — NOT merged to `main`, no PR open yet. Everything below lives on this branch. `main` is untouched (still the old pre-rebuild site).
+Read this first in a new session. Then read [`docs/specs/2026-07-25-portfolio-design.md`](specs/2026-07-25-portfolio-design.md), the original design spec (palette, typography, page plans, component sourcing). The spec is "what we set out to build"; this file is "what's true right now", including where the site has since deviated from the spec (see *Deviations from the spec*).
 
 ## Current state
 
-The site was rebuilt from scratch on this branch (wiped `src/`, kept `docs/specs/`, `context/`, fonts, CNAME, favicon) following the design spec exactly. All 5 pages (Home, Me, Projects, Interests, Contact) + 404 + footer/nav are built and working. `astro check` and `npm run build` both pass with 0 errors as of the last commit on this branch. Not deployed anywhere yet — deploy workflow (`.github/workflows/deploy.yml`, triggers on push to `main`) is unchanged from before the rebuild and untested since nothing's been merged.
+- **Built and merged.** The `rebuild/midnight-editorial` rebuild is merged into `main` (and pushed). All 5 pages (Home, Me, Projects, Interests, Contact) plus 404, navbar, and footer exist. The deploy workflow (`.github/workflows/deploy.yml`) triggers on push to `main`, runs `npm run build`, and publishes to GitHub Pages at paulwitkowski.com.
+- **Branch work in progress:** `feat/ml-dl-cv-focus` (branched from `chore/deps-and-theme-tests`) is committed locally but **not merged to `main` and not pushed**. It carries the Astro 7 upgrade, the test fix, and the ML/DL/CV content refocus described below. Merging it to `main` publishes the site.
+- **Verified before the last commit:** `npm run build` (includes `astro check`) passes with 0 errors; `npm test` passes 3/3; `npm audit` reports 0 vulnerabilities; every page returns 200 in `npm run dev` and Paul confirmed the pages work by hand.
+
+## Positioning (changed from the original spec)
+
+The site now leads with **machine learning, deep learning, and computer vision**; Python and C++ are mentioned lightly as the main languages. Systems work (compiler, shell, data pipeline) stays on the site as proof of depth but is no longer the headline.
+
+- Hero headline: "Hi, I'm Paul. I teach machines to see and learn." plus a one-line paragraph and a visible internship line ("Open to a 6-month internship from February 2027 in Machine Learning / Computer Vision"). Both live in `src/site.config.ts` (`tagline`, `description`, `availability`).
+- **Degree wording is "Data Science & AI" (SCIA major)**, matching the CV and the track's real name: a five-year engineering degree equivalent to an MSc, first three years general systems/software, last two on AI. Do not write "AI & Systems Engineering" or "AI and Data Engineering" — both were deliberately dropped.
+- Flagship grid (home page), in order: EyeSegmentation, C++ Diffeomorphic Demons, Neural Network From Scratch, StockAI, InsightEd. Tiger, 42sh, forest-fire, and DealBoard are no longer flagship (still on the Projects page). The grid expects exactly 5 flagships (`spanByOrder` in `FlagshipGrid.tsx`).
+- Me bio mentions the Thales win and Prologin competitions only briefly; the numbers (805 images, Dice 0.939, 1,000+ entrants, etc.) live in the timeline entries, not the bio.
 
 ## Decisions and conventions (condensed — see spec for full detail)
 
-- **Stack:** Astro static output, React islands (`client:load` for above-the-fold/interactive-critical, `client:visible` for below-the-fold), Tailwind v4, content collections (Zod-validated) for `projects`/`timeline`/`interests`/`links`.
-- **Tokens:** `src/styles/global.css` — `--color-background/surface/foreground/accent`, light is the default `:root`, `:root.dark` overrides. `--radius-panel` (12px, cards/panels) vs `--radius-control` (8px, buttons/chips/nav). Single accent color (`#95122C`) in both themes, never used for small body text.
-- **Theme toggle:** class on `<html>`, persisted to `localStorage`, inline no-flash script in `BaseLayout.astro` (`src/lib/theme.ts` exports the script string). Also re-applied on the `astro:before-swap` event — required because View Transitions keeps the same `document` across client-side navigations, so without this the theme class would silently reset to default on every page change.
-- **View Transitions:** `astro:transitions` `<ClientRouter fallback="animate">` is enabled site-wide. `transition:animate="fade"` is scoped to `<main>` only (nav/footer/spotlight background stay static across page changes, only the content area fades). Link prefetching is **disabled** (`prefetch: false` in `astro.config.mjs`) — Astro's default `prefetchAll` was saturating Firefox's per-origin connection pool and causing slow/failed navigations there.
-- **Spotlight background:** single `position: fixed` layer in `BaseLayout.astro`, pinned to the *viewport* (not the page), so it stays put while content scrolls over it. `<main>` and `<Footer>` are explicitly `relative z-10` to paint above it — fixed-position elements paint above static content by default regardless of DOM order, this bit us once (see below).
-- **Sourced components** (Aceternity / Motion Primitives / Kokonut UI) live in `src/components/ui/` and are always recolored to the site's CSS-variable tokens (`bg-surface`, `text-foreground`, `bg-accent`, etc.) — never left with their original hardcoded neutral/brand colors. `TextEffect` and `AnimatedGroup` are the real Motion Primitives source (the registry endpoint was behind bot-mitigation during the initial build, so hand-built stand-ins were used temporarily, then swapped for the real source once supplied).
-- **Projects page grid:** true CSS masonry (`columns-1 sm:columns-2 lg:columns-3`, not CSS Grid) — deliberate: cards have naturally different heights, only the first row is top-aligned, everything after stacks independently per column with `break-inside-avoid`.
-- **Home flagship grid:** stays CSS Grid (spec'd asymmetric spans: wide/medium/narrow), with `items-start` so uneven card heights stagger at the bottom instead of vertically centering/misaligning within a stretched row.
-- **Private-repo cards** (`CardFlip`, back face) have a scrollable content area (`.thin-scrollbar` utility in `global.css`) with a fade + chevron indicator that only renders when content actually overflows, and disappears once scrolled to the bottom.
-- **`docs/` gitignore:** `docs/*.md`, `docs/*.pdf`, `docs/*.jpg/.jpeg/.png` are ignored by default (loose personal reference material — CV drafts, raw photos, source PDFs Paul drops in for context). `docs/specs/`, `docs/plans/`, and this file (`docs/HANDOFF.md`, explicitly negated) are the exceptions that stay tracked.
+- **Stack:** Astro 7 static output, React 19 islands (`client:load` for above-the-fold/interactive-critical, `client:visible` for below-the-fold), Tailwind v4, content collections for `projects`/`timeline`/`interests`/`links`.
+- **Content schema** is in `src/content.config.ts` and imports `z` from `astro/zod` (Astro 7's bundled Zod 4; `astro:content`'s `z` is deprecated). The contact form still uses the project's own `zod@3` + `@hookform/resolvers@3` — don't mix the two.
+- **Tokens:** `src/styles/global.css` — `--color-background/surface/foreground/accent`, light is the default `:root`, `:root.dark` overrides. `--radius-panel` (12px) vs `--radius-control` (8px). Single accent `#95122C` in both themes, never for small body text.
+- **Theme toggle:** class on `<html>`, persisted to `localStorage`, inline no-flash script in `BaseLayout.astro` (script string exported from `src/lib/theme.ts`). Also re-applied on `astro:before-swap` — View Transitions keeps the same `document`, so without it the theme resets on every navigation.
+- **View Transitions:** `<ClientRouter fallback="animate">` site-wide; `transition:animate="fade"` is scoped to `<main>` only. Link prefetching is **disabled** (`prefetch: false` in `astro.config.mjs`) because default prefetching saturated Firefox's per-origin connection cap.
+- **Spotlight background:** one `position: fixed` layer in `BaseLayout.astro`; `<main>` and `<Footer>` are explicitly `relative z-10` to paint above it (fixed elements otherwise paint over static content regardless of DOM order).
+- **Sourced components** (Aceternity / Motion Primitives / Kokonut UI) live in `src/components/ui/` and `src/components/kokonutui/`, recolored to the CSS-variable tokens — never left with their original hardcoded colors.
+- **Projects page grid:** true CSS masonry (`columns-1 sm:columns-2 lg:columns-3`, `break-inside-avoid`), not CSS Grid. **Home flagship grid:** CSS Grid with `items-start`.
+- **Private-repo cards** (`CardFlip`) have a scrollable back face (`.thin-scrollbar`) with a fade + chevron that only shows when content overflows. Private projects: Tiger, 42sh, EpiTweet, PING, InsightEd, forest-fire, Sovereign AI Factory.
+- **Timeline:** entries sorted by `startDate`; single-date entries (`startDate === endDate`) render as a point, not a range; passed entries highlight on scroll. `kind` is one of education/work/teaching/volunteer/hackathon (the Thales contest uses `hackathon`; there is no "competition" kind).
+- **Me page layout:** portrait is vertically centered against the whole right column (`md:items-center`); buttons are Download CV then Contact.
+- **`docs/` gitignore:** `docs/*.md`, `docs/*.pdf`, `docs/*.jpg/.jpeg/.png` are ignored (loose personal reference material). `docs/specs/` and `docs/HANDOFF.md` are the tracked exceptions.
+- **Tests:** `npm test` (vitest + jsdom). `tests/setup.ts` installs an in-memory `localStorage` when the runtime's is missing — Node 26 ships an experimental global `localStorage` that is undefined without `--localstorage-file` and shadows jsdom's.
+- **Dev server (Astro 7):** `npm run dev` starts a background daemon. If it says "Another astro dev server is already running", use `npx astro dev stop` (or `npm run dev -- --force`). `astro dev status` / `astro dev logs` also exist.
 
-## Real bugs found and fixed this session — don't reintroduce
+## Real bugs found and fixed — don't reintroduce
 
-- **Theme toggle unclickable at desktop width:** the navbar's `NavItems` (centered nav links, from the sourced Aceternity component) renders as `position: absolute; inset: 0`, covering the *entire* navbar width, not just the visible link text. Anything sharing that space needs `position: relative` to escape being covered underneath it — the logo had this already; the theme toggle didn't. Fixed in `src/components/ThemeToggle.tsx`.
-- **Mobile nav hamburger not keyboard/screen-reader accessible:** the sourced `MobileNavToggle` rendered a bare `<svg onClick>` instead of a real `<button>`. Fixed in `src/components/ui/resizable-navbar.tsx`.
-- **Firefox slow/hard-reloading navigations:** caused by Astro's default link prefetching saturating Firefox's 6-connection-per-origin cap. Fixed by setting `prefetch: false`.
-- **View-transition fallback animation never actually played:** `<ClientRouter fallback="animate">` alone does nothing — its CSS only binds to elements with an explicit `transition:animate` directive. Fixed by adding `transition:animate="fade"` to `<main>`.
-- **Dev-mode-only "Failed to fetch dynamically imported module" after client-side nav:** breaks React hydration (so mouse-driven interactions like the 3D card tilt or the card flip silently stop working) after navigating via a nav-link click in `npm run dev`. Confirmed via a real production build + `astro preview` that this does **not** happen in production — it's a Vite dev-server-only artifact. Left alone by request; don't chase it further unless it starts happening in production too.
+- **Theme toggle unclickable at desktop width:** the navbar's `NavItems` is `position: absolute; inset: 0`, covering the whole bar. Anything sharing that space needs `position: relative` (done in `ThemeToggle.tsx`).
+- **Mobile nav hamburger not accessible:** the sourced toggle was a bare `<svg onClick>`; it's now a real `<button>` with `aria-label`/`aria-expanded` in `resizable-navbar.tsx`.
+- **Firefox slow navigations:** default link prefetching; fixed with `prefetch: false`.
+- **View-transition fallback never animated:** `<ClientRouter fallback="animate">` needs an explicit `transition:animate` directive on an element (now on `<main>`).
+- **Dev-only "Failed to fetch dynamically imported module" after nav clicks:** a Vite dev-server artifact (breaks hydration in `npm run dev` only); confirmed not present in a production build + `astro preview`. Left alone deliberately.
+- **Theme tests failing on Node 26:** fixed by the `localStorage` polyfill in `tests/setup.ts` (see above).
 
 ## What's left
 
-**Assets only Paul can provide:**
-- Real photography set for the Interests page (currently `picsum.photos` placeholders)
-- Flip `introduction-au-data-engineering` to public on GitHub so its Projects card can link out instead of showing as private
+**Assets / content only Paul can provide:**
+- Real photography set for the Interests page. The page is currently a "Coming soon" placeholder; the parallax implementation (`InterestsParallax.tsx`, `ui/parallax-scroll.tsx`, `interests.json` with picsum placeholders) is built and commented out in `src/pages/interests.astro` — restore it once real photos exist.
+- Project screenshots: every project has `image: null`, so every card shows the abstract motif placeholder.
+- Paul's personal contribution to the Cloud Temple (PFEE) work: the timeline entry and project card are written at team level because the repo is a team of six.
 
-**Content decisions still open:**
-- Two estimated hackathon dates on the Me timeline (DealBoard, Fine Print checkpoints) — only the YAKAP hackathon had an exact date in the source material, the other two are guesses worth double-checking
-- Whether `jangu` and the NetLogo `SMA` coursework should really stay off the Projects page (excluded because Paul's own `PROJECTS_RECAP.md` flags both as not polished enough — never explicitly confirmed)
+**Open content questions:**
+- The hackathon dates in the consolidated `hackathons-checkpoint.md` timeline entry (Nov 2025 – May 2026) are approximate.
+- Whether `jangu` and the NetLogo `SMA` coursework should stay off the Projects page (excluded earlier as not polished enough; never explicitly confirmed).
+- Whether forest-fire / Tiger / 42sh should be made public so their cards can link out (forest-fire's own text says it will be).
 
-**Can't produce myself:**
-- `public/og-image.png` (1200×630 social-preview card) — no raster image-generation tool available in-session. `site.config.ts` already points at this path; the file just doesn't exist yet.
+**Deliberately not done:**
+- No real Formspree submission test (code path verified, never sent to the live inbox).
+- No final human read-through of all drafted copy beyond what Paul has already edited (hero, bio, degree wording, Prologin/Thales sentence are his or approved by him).
+- Minor `ts(6133)`/`ts(6385)` warnings remain in the sourced `ui/` components (unused `e`/`onClose`, deprecated `staggerChildren`); they don't fail the build.
 
-**Deliberately not done yet:**
-- No real Formspree submission test (code path verified, never actually sent to Paul's live inbox)
-- No final human read-through of the drafted copy (bio, hero tagline, project descriptions) — most of it has been cross-checked against Paul's real CV/internship report/hackathon paper this session, but it's still fundamentally AI-drafted prose
+## Deviations from the spec
 
-**Not merged:** branch is fully committed and pushed, `main` untouched, no PR open.
+The spec (`docs/specs/2026-07-25-portfolio-design.md`) is otherwise accurate, but note:
+- **Categories:** the schema's `category` enum is Hackathons / Medical & Research / Systems / From-scratch / Tools / Fun Stuff / Private Projects. There is no standalone "Flagship" category — `flagship` is a boolean only.
+- **Flagship set and order** differ from the spec's draft (see *Positioning*).
+- **Tests exist** (vitest, theme + reduced-motion), though the spec lists an automated suite as out of scope.
+- **Stack versions:** Astro 7 (not 5) and `@astrojs/react` 7; `shadcn` is no longer a dependency (use `npx shadcn@latest add …` when installing components).
+- **Hero** carries a headline/availability line instead of the spec's original tagline.
+- **Contact details:** the public CV (`public/cv/paul-witkowski-cv.pdf`) deliberately has no email or phone, consistent with the site never exposing an email.
 
 ## Key file paths
 
-- `docs/specs/2026-07-25-portfolio-design.md` — the design spec (read this next)
-- `src/site.config.ts` — site name, tagline, CV path, Formspree endpoint, OG defaults
-- `src/content.config.ts` — content collection schemas (Zod)
+- `docs/specs/2026-07-25-portfolio-design.md` — original design spec
+- `src/site.config.ts` — site name, tagline, description, internship availability line, CV path, Formspree endpoint, OG defaults
+- `src/content.config.ts` — content collection schemas (Zod via `astro/zod`)
 - `src/content/projects/*.md`, `src/content/timeline/*.md`, `src/content/interests.json`, `src/content/links.json` — the actual content
 - `src/layouts/BaseLayout.astro` — SEO/OG meta, theme script, View Transitions, Spotlight background, page shell
-- `src/styles/global.css` — design tokens, reduced-motion overrides, `.thin-scrollbar` utility
-- `src/components/ui/` — sourced third-party components (recolored)
-- `src/components/` (top level) — this project's own components (`Navbar`, `Hero`, `ProjectCard3D`, `ProjectsGrid`, `FlagshipGrid`, `MeTimeline`, `InterestsParallax`, `ContactForm`, `Footer`)
+- `src/styles/global.css` — design tokens, reduced-motion overrides, `.thin-scrollbar`
+- `src/components/ui/`, `src/components/kokonutui/` — sourced third-party components (recolored)
+- `src/components/` (top level) — own components (`Navbar`, `Hero`, `ProjectCard3D`, `ProjectsGrid`, `FlagshipGrid`, `MeTimeline`, `InterestsParallax`, `ContactForm`, `ThemeToggle`, `Footer`)
 - `src/pages/` — one file per route
-- `public/cv/paul-witkowski-cv.pdf`, `src/assets/me/portrait.jpg` — real assets already wired in
+- `public/cv/paul-witkowski-cv.pdf`, `src/assets/me/portrait.jpg`, `public/og-image.png`, `public/favicon.svg`, `public/fonts/` — real assets
 - `astro.config.mjs` — `prefetch: false`, React integration, Tailwind v4 Vite plugin
+- `tests/` — vitest tests and setup
 
 ## Verification commands
 
 ```bash
 npx astro check   # type + content-collection schema check
-npm run build     # full production build (the real CI gate)
-npm run dev       # local dev server
-npm run preview   # serves the production build, for testing things that behave
-                   # differently in dev (e.g. the Firefox/prefetch bug above)
+npm run build     # full production build (the real CI gate; runs astro check first)
+npm test          # vitest (theme, reduced-motion)
+npm run dev       # local dev server (background daemon on Astro 7; stop with `npx astro dev stop`)
+npm run preview   # serves the production build, for things that differ from dev
+npm audit         # currently 0 vulnerabilities
 ```

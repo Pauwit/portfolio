@@ -1,14 +1,19 @@
 # paulwitkowski.com
 
-Personal portfolio site for Paul Witkowski. Astro, static output, deployed to GitHub Pages at the custom domain paulwitkowski.com.
+Personal portfolio site for Paul Witkowski. Astro 7, static output, React islands, Tailwind v4, deployed to GitHub Pages at the custom domain paulwitkowski.com.
 
 ## Orientation
 
 - **Handoff/status:** `docs/HANDOFF.md` — current build state, decisions made, bugs already fixed (don't reintroduce), what's left, key file paths. Read this first in a new session.
-- **Design spec:** `docs/specs/2026-07-25-portfolio-design.md` — every content, visual, and tech decision. Read this second; it needs no other context.
-- **Implementation plans:** `docs/plans/YYYY-MM-DD-<phase>.md`, one per build phase, when phases are planned individually. The `rebuild/midnight-editorial` branch instead did a full spec rebuild in one pass (single branch, no per-phase worktrees) — see `docs/HANDOFF.md` for how that diverged from the pipeline below.
-- **Build phases:** superseded by the full rebuild on `rebuild/midnight-editorial` — see `docs/HANDOFF.md` for current status. Not merged to `main` yet.
+- **Design spec:** `docs/specs/2026-07-25-portfolio-design.md` — the original content, visual, and tech decisions. Read this second; `docs/HANDOFF.md` lists where the site has since deviated from it (positioning, categories, flagship set, stack versions).
+- **Implementation plans:** `docs/plans/YYYY-MM-DD-<phase>.md`, one per build phase, when phases are planned individually. None exist right now: the site was rebuilt in one pass on `rebuild/midnight-editorial` (single branch, no per-phase worktrees), and later work has been small content/dependency branches.
+- **Build phases:** superseded. The full rebuild is merged into `main`; all 5 pages are built. The Interests page is a "Coming soon" placeholder until real photos exist. See `docs/HANDOFF.md` for current status and open items.
 - `context/` holds raw source material (LinkedIn export, project recap, repo list) used to write real copy — never committed, gitignored.
+
+## Commands
+
+- `npm run dev` — dev server. Astro 7 runs it as a background daemon; stop it with `npx astro dev stop`.
+- `npm run build` — `astro check` + production build (the CI gate). `npm test` — vitest. `npm audit` should stay at 0 vulnerabilities.
 
 ## Git conventions
 
@@ -18,7 +23,7 @@ Personal portfolio site for Paul Witkowski. Astro, static output, deployed to Gi
 
 ## Content-as-data
 
-Projects, timeline entries, interests, and links live in Astro content collections (`src/content/`), never hardcoded in markup. Schema lives in `src/content.config.ts` (Content Layer API — `loader: glob(...)`/`file(...)` from `astro/loaders`, not the legacy `type: 'content' | 'data'` shape).
+Projects, timeline entries, interests, and links live in Astro content collections (`src/content/`), never hardcoded in markup. Schema lives in `src/content.config.ts` (Content Layer API — `loader: glob(...)`/`file(...)` from `astro/loaders`, not the legacy `type: 'content' | 'data'` shape). Import `z` from `astro/zod`, not `astro:content`.
 
 ## Build pipeline
 
